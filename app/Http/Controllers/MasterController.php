@@ -89,7 +89,6 @@ class MasterController extends Controller
         $lastheards = Lastheard::select('callsign', 'time_utc', 'mode', 'callsign_suffix', 'target', 'src', 'duration', 'loss', 'bit_error_rate', 'rssi')
                                 ->whereDate('time_utc', $today)
                                 ->orderBy('id', 'desc')
-                                ->take(10)
                                 ->get();
 
         // Menghitung total_duration berdasarkan callsign
@@ -109,8 +108,11 @@ class MasterController extends Controller
             $data['total_duration'] = round($totalDurationInSeconds / 60, 2); // Pembulatan hingga 2 desimal
         }
 
+        // Ambil 10 data teratas
+        $lastheardsArrayLimited = array_slice($lastheardsArray, 0, 10);
+
         return response()->json([
-            'data' => $lastheardsArray
+            'data' => $lastheardsArrayLimited
         ]);
     }
 }
