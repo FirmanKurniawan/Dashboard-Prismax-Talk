@@ -67,6 +67,7 @@
                                             <th>Loss</th>
                                             <th>BER</th>
                                             <th>RSSI</th>
+                                            <th>All time</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-border-bottom-0">
@@ -84,7 +85,7 @@
                         // Fungsi untuk memperbarui data tabel
                         function updateTable() {
                             $.ajax({
-                                url: 'http://127.0.0.1:8000/master/lastheard',
+                                url: 'http://103.18.133.192:3000/master/lastheard',
                                 method: 'GET',
                                 success: function(response) {
                                     var tableBody = $('#lastheard-table tbody');
@@ -100,6 +101,7 @@
                                             '<td>' + data.loss + '</td>' +
                                             '<td>' + data.bit_error_rate + '</td>' +
                                             '<td>' + data.rssi + '</td>' +
+                                            '<td>' + data.total_duration + '</td>' +
                                             '</tr>';
                                         tableBody.append(row); // Tambahkan baris ke tabel
                                     });

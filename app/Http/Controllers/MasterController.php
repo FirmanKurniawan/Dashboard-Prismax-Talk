@@ -104,7 +104,9 @@ class MasterController extends Controller
         // Menambahkan total_duration ke setiap entri dalam array data
         foreach ($lastheardsArray as &$data) {
             $callsign = $data['callsign'];
-            $data['total_duration'] = isset($totalDurationByCallsign[$callsign]) ? $totalDurationByCallsign[$callsign] : 0;
+            $totalDurationInSeconds = isset($totalDurationByCallsign[$callsign]) ? $totalDurationByCallsign[$callsign] : 0;
+            // Konversi total duration dari detik menjadi menit
+            $data['total_duration'] = round($totalDurationInSeconds / 60, 2); // Pembulatan hingga 2 desimal
         }
 
         return response()->json([
