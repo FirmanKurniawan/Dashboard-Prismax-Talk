@@ -41,3 +41,4 @@ Route::get('/lastheard/list', [LastheardController::class, 'list']);
 
 Route::get('/master', [MasterController::class, 'index'])->name('master.index');
 Route::get('/master/live_data', [MasterController::class, 'api_live_data']);
+Route::get('/master/lastheard', [MasterController::class, 'lastheard']);

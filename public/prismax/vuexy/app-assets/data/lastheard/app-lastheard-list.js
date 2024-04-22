@@ -45,7 +45,7 @@ $(function () {
   if (dtUserTable.length) {
     dtUserTable.DataTable({
       ajax: {
-        url: 'http://localhost:8000/lastheard/list', // Ganti dengan URL API Anda
+        url: 'http://127.0.0.1:8000/lastheard/list', // Ganti dengan URL API Anda
         dataSrc: 'data' // Menentukan sumber data dalam respons JSON
       },
       columns: [

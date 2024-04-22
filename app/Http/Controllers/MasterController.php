@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Master;
 use App\Models\Live;
+use App\Models\Lastheard;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class MasterController extends Controller
 {
@@ -75,5 +78,37 @@ class MasterController extends Controller
         }
 
         return $dataByNames;
+    }
+
+    public function lastheard(Request $request)
+    {
+        // Mendapatkan tanggal hari ini
+        $today = Carbon::today();
+
+        // Mengambil data terakhir dari tabel Lastheard berdasarkan hari ini
+        $lastheards = Lastheard::select('callsign', 'time_utc', 'mode', 'callsign_suffix', 'target', 'src', 'duration', 'loss', 'bit_error_rate', 'rssi')
+                                ->whereDate('time_utc', $today)
+                                ->orderBy('id', 'desc')
+                                ->take(10)
+                                ->get();
+
+        // Menghitung total_duration berdasarkan callsign
+        $totalDurationByCallsign = Lastheard::select('callsign', DB::raw('SUM(duration) as total_duration'))
+                                            ->whereDate('time_utc', $today)
+                                            ->groupBy('callsign')
+                                            ->pluck('total_duration', 'callsign');
+
+        // Mengonversi koleksi model menjadi array
+        $lastheardsArray = $lastheards->unique('callsign')->toArray();
+
+        // Menambahkan total_duration ke setiap entri dalam array data
+        foreach ($lastheardsArray as &$data) {
+            $callsign = $data['callsign'];
+            $data['total_duration'] = isset($totalDurationByCallsign[$callsign]) ? $totalDurationByCallsign[$callsign] : 0;
+        }
+
+        return response()->json([
+            'data' => $lastheardsArray
+        ]);
     }
 }

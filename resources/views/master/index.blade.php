@@ -51,6 +51,69 @@
                         </div>
                         </div>
                     </div>
+                    <div class="col-lg-12 col-md-12 mt-2">
+                        <!-- Bootstrap Table with Header - Dark -->
+                        <div class="card">
+                            <div class="table-responsive text-nowrap">
+                                <table class="table table-sm" id="lastheard-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Mode</th>
+                                            <th>Callsign</th>
+                                            <th>Target</th>
+                                            <th>Src</th>
+                                            <th>Dur</th>
+                                            <th>Loss</th>
+                                            <th>BER</th>
+                                            <th>RSSI</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                        <!-- Data akan diisi melalui AJAX -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--/ Bootstrap Table with Header Dark -->
+                    </div>
+                    
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                    $(document).ready(function() {
+                        // Fungsi untuk memperbarui data tabel
+                        function updateTable() {
+                            $.ajax({
+                                url: 'http://127.0.0.1:8000/master/lastheard',
+                                method: 'GET',
+                                success: function(response) {
+                                    var tableBody = $('#lastheard-table tbody');
+                                    tableBody.empty(); // Bersihkan isi tabel sebelum mengisi data baru
+                                    $.each(response.data, function(key, data) {
+                                        var row = '<tr>' +
+                                            '<td>' + data.time_utc + '</td>' +
+                                            '<td>' + data.mode + '</td>' +
+                                            '<td>' + data.callsign + '</td>' +
+                                            '<td>' + data.target + '</td>' +
+                                            '<td>' + data.src + '</td>' +
+                                            '<td>' + data.duration + '</td>' +
+                                            '<td>' + data.loss + '</td>' +
+                                            '<td>' + data.bit_error_rate + '</td>' +
+                                            '<td>' + data.rssi + '</td>' +
+                                            '</tr>';
+                                        tableBody.append(row); // Tambahkan baris ke tabel
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error:', error);
+                                }
+                            });
+                        }
+                    
+                        // Panggil fungsi updateTable() secara berkala setiap 5 detik
+                        setInterval(updateTable, 500);
+                    });
+                    </script>
                 </div>
                 <!-- Cards Draggable -->
                 <div class="row mb-4" id="sortable-cards">
@@ -60,11 +123,11 @@
                         <div class="card drag-item cursor-move">
                             <div class="text-center" style="padding-top: 1px; padding-bottom: 0.5px;">
                                 @if ($master->package_id == 'MMDVM_MMDVM_HS_Hat')
-                                    <img src="../../prismax/vuexy/assets/images/mmdvm-simplex.png" height="100" width="50" alt="view sales">
+                                    <img src="../../prismax/vuexy/assets/images/mmdvm-simplex.png" height="80" width="50" alt="view sales">
                                 @elseif ($master->package_id == 'MMDVM_MMDVM_HS_Dual_Hat')
-                                    <img src="../../prismax/vuexy/assets/images/mmdvm-duplex.png" height="100" width="50" alt="view sales">
+                                    <img src="../../prismax/vuexy/assets/images/mmdvm-duplex.png" height="80" width="50" alt="view sales">
                                 @else
-                                    <img src="../../prismax/vuexy/assets/images/prismax.png" height="100" width="50" alt="view sales">
+                                    <img src="../../prismax/vuexy/assets/images/signal.png" height="80" width="50" alt="view sales">
                                 @endif
                             </div>
                             <div class="card-body text-center">
