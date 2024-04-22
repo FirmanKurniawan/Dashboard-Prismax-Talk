@@ -101,7 +101,7 @@
                                             '<td>' + data.loss + '</td>' +
                                             '<td>' + data.bit_error_rate + '</td>' +
                                             '<td>' + data.rssi + '</td>' +
-                                            '<td>' + data.total_duration + '</td>' +
+                                            '<td>' + data.total_duration + 'min' + '</td>' +
                                             '</tr>';
                                         tableBody.append(row); // Tambahkan baris ke tabel
                                     });
