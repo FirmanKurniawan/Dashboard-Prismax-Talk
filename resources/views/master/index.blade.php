@@ -71,7 +71,9 @@
                                 <h5 class="card-title mb-1">{{$master->name}}</h5>
                                 <h5>
                                     @if ($master->callsign == null) XXX @else {{$master->callsign}} @endif 
-                                    @if ($master->dmr_id == null) (DMR ID: 00000) @else (DMR ID: {{$master->dmr_id}}) @endif 
+                                    @if ($master->dmr_id == null) (DMR ID: 00000) @else 
+                                    (DMR ID: {{$master->dmr_id}}) 
+                                    @endif 
                                 </h5>
                                 <p class="mb-2">
                                     @if ($master->connected == null) 0h 0m @else {{$master->connected}} @endif
@@ -79,15 +81,10 @@
                                     @if ($master->location == null) no location @else {{$master->location}} @endif
                                 </p>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <h6>
-                                            @if(!empty($master->live_data) && isset($master->live_data[1]))
-                                                @if($master->live_data[1]['status'] == "START" && $master->live_data[1]['slot'] == 1)
-                                                    <div class="spinner-grow spinner-grow-sm text-success" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </div>
-                                                @endif
-                                            @endif
+                                    <div id="background-live-{{$master->name}}" class="col-6">
+                                        <h6 style="padding-top: 5%;">
+                                            <div id="spinner-{{$master->name}}" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;">
+                                            </div>
                                             SLOT 1
                                         </h6>
                                         <p>
@@ -96,21 +93,17 @@
                                             <span style="display:inline-block; width: 100px;">Destination</span>: <span id="destination-{{$master->name}}">.....</span>
                                         </p>
                                     </div>
-                                    <div class="col-6">
-                                        <h6>
-                                            @if(!empty($master->live_data) && isset($master->live_data[2]))
-                                                @if($master->live_data[2]['status'] == "START" && $master->live_data[2]['slot'] == 2)
-                                                    <div class="spinner-grow spinner-grow-sm text-success" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
-                                                    </div>
-                                                @endif
-                                            @endif
+                                    <div id="background-live2-{{$master->name}}" class="col-6">
+                                        <h6  style="padding-top: 5%;">
+                                            <div id="spinner2-{{$master->name}}" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
                                             SLOT 2
                                         </h6>
                                         <p>
-                                            <span style="display:inline-block; width: 100px;">Source</span>: <span id="source-{{$master->name}}">.....</span>
+                                            <span style="display:inline-block; width: 100px;">Source</span>: <span id="source2-{{$master->name}}">.....</span>
                                             <br> 
-                                            <span style="display:inline-block; width: 100px;">Destination</span>: <span id="destination-{{$master->name}}">.....</span>
+                                            <span style="display:inline-block; width: 100px;">Destination</span>: <span id="destination2-{{$master->name}}">.....</span>
                                         </p>
                                     </div>
                                 </div>
@@ -125,22 +118,62 @@
                     // Function to fetch live data from API and update source and destination every second
                     function updateLiveData() {
                         setInterval(function() {
-                            fetch('http://localhost:8000/master/live_data')
+                            fetch('http://103.18.133.192:3000/master/live_data')
                             .then(response => response.json())
                             .then(data => {
                                 // Loop through the received data and update source and destination
                                 Object.keys(data).forEach(masterName => {
                                     const master = data[masterName];
-                                    if (master[1] && master[1].status == "START") {
-                                        document.getElementById('source-' + masterName).innerText = master[1].callsign;
-                                    }
-                                    if (master[1] && master[1].status == "START") {
-                                        document.getElementById('destination-' + masterName).innerText = master[1].callsign;
+
+                                    const backgroundLiveElement = document.getElementById('background-live-' + masterName);
+                                    const backgroundLiveElement2 = document.getElementById('background-live2-' + masterName);
+                                    // Ensure the element is found before trying to access its style
+                                    if (backgroundLiveElement) {
+                                        // SLOT 1
+                                        if (master[1] && master[1].status == "START") {
+                                            backgroundLiveElement.style.backgroundColor = '#ff6600';
+                                            backgroundLiveElement.style.color = 'white';
+                                            document.getElementById('source-' + masterName).innerText = master[1].callsign;
+                                            document.getElementById('spinner-' + masterName).style.display = "inline-block";
+                                            // console.log(master[2].callsign)
+                                        }else if(master[1] && master[1].status == "END"){
+                                            backgroundLiveElement.style.backgroundColor = '#ffffff';
+                                            backgroundLiveElement.style.color = '';
+                                            document.getElementById('source-' + masterName).innerText = ".....";
+                                            document.getElementById('spinner-' + masterName).style.display = "none";
+                                        }
+
+                                        if (master[1] && master[1].status == "START") {
+                                            document.getElementById('destination-' + masterName).innerText = master[1].callsign;
+                                        }
+                                        else if(master[1] && master[1].status == "END"){
+                                            document.getElementById('destination-' + masterName).innerText = ".....";
+                                        }
+
+                                        // SLOT 2
+                                        if(master[2] && master[2].status == "START"){
+                                            backgroundLiveElement2.style.backgroundColor = '#ff6600';
+                                            backgroundLiveElement2.style.color = 'white';
+                                            document.getElementById('source2-' + masterName).innerText = master[2].callsign;
+                                            document.getElementById('spinner2-' + masterName).style.display = "inline-block";
+                                        }else if(master[2] && master[2].status == "END"){
+                                            backgroundLiveElement2.style.backgroundColor = '#ffffff';
+                                            backgroundLiveElement2.style.color = '';
+                                            document.getElementById('source2-' + masterName).innerText = ".....";
+                                            document.getElementById('spinner2-' + masterName).style.display = "none";
+                                        }
+
+                                        if (master[2] && master[2].status == "START") {
+                                            document.getElementById('destination2-' + masterName).innerText = master[2].callsign;
+                                        }
+                                        else if(master[2] && master[2].status == "END"){
+                                            document.getElementById('destination2-' + masterName).innerText = ".....";
+                                        }
                                     }
                                 });
                             })
                             .catch(error => console.error('Error fetching live data:', error));
-                        }, 3000); // Update every 1 second
+                        }, 500); // Update every 1 second
                     }
                 
                     // Call the function to start updating live data
