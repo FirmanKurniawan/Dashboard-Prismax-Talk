@@ -9,7 +9,8 @@ class CallsignController extends Controller
 {
     public function index()
     {
-        return view('callsign.index');
+        $callsigns = Callsign::count();
+        return view('callsign.index', compact('callsigns'));
     }
     
     public function store(Request $request)
