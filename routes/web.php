@@ -28,7 +28,10 @@ Route::get('/company/list', [CompanyController::class, 'list']);
 Route::get('/order/index', [OrderController::class, 'index'])->name('order.index');
 
 Route::get('/analytics', [AnalyticController::class, 'index'])->name('analytic.index');
+
 Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+Route::get('/report/master', [ReportController::class, 'master']);
+
 Route::get('/hbmonitor', [HBMonitorController::class, 'index'])->name('hbmonitor.index');
 Route::get('/pistar', [PistarController::class, 'index'])->name('pistar.index');
 

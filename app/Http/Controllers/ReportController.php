@@ -19,8 +19,10 @@ class ReportController extends Controller
         $lives = $this->getDataByNames();
         $startCount = $this->getStartCount($lives);
         $lives['start_count'] = $startCount;
-        $live_count = count($lives);
-        return view('reports.index', compact('callsign_count', 'master_count', 'lastheard_count', 'live_count'));
+        $live_count = $lives['start_count'];
+
+        $masters = Master::all();
+        return view('reports.index', compact('callsign_count', 'master_count', 'lastheard_count', 'live_count', 'masters'));
     }
 
     public function getDataByNames()
@@ -82,5 +84,17 @@ class ReportController extends Controller
         }
 
         return $startCount;
+    }
+
+    public function master(Request $request)
+    {
+        $masters = Master::orderBy('id', 'asc')->get();
+
+        // Mengonversi koleksi model menjadi array
+        $mastersArray = $masters->toArray();
+
+        return response()->json([
+            'data' => $mastersArray
+        ]);
     }
 }

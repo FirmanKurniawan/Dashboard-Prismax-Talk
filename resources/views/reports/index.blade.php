@@ -2,7 +2,7 @@
 @section('title', 'Callsign - Prismax')
 @section('content')
 <!-- BEGIN: Content-->
-<div class="app-content content ">
+<div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper container-xxl p-0">
@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                             <div class="my-auto">
-                                <h4 class="fw-bolder mb-0">230k</h4>
+                                <h4 class="fw-bolder mb-0">{{$lastheard_count}}</h4>
                                 <p class="card-text font-small-3 mb-0">Activity</p>
                             </div>
                             </div>
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                             <div class="my-auto">
-                                <h4 class="fw-bolder mb-0">8.549k</h4>
+                                <h4 class="fw-bolder mb-0">{{$callsign_count}}</h4>
                                 <p class="card-text font-small-3 mb-0">Callsigns</p>
                             </div>
                             </div>
@@ -53,7 +53,7 @@
                                 </div>
                             </div>
                             <div class="my-auto">
-                                <h4 class="fw-bolder mb-0">1.423k</h4>
+                                <h4 class="fw-bolder mb-0">{{$master_count}}</h4>
                                 <p class="card-text font-small-3 mb-0">Masters</p>
                             </div>
                             </div>
@@ -76,6 +76,291 @@
                     </div>
                 </div>
                 <!--/ Statistics Card -->
+
+                <!-- list and filter start -->
+                <div class="card">
+                    <div class="card-body border-bottom">
+                        <h4 class="card-title">List Master</h4>
+                        <div class="row">
+                            <div class="col-md-4 user_role"></div>
+                            <div class="col-md-4 user_plan"></div>
+                            <div class="col-md-4 user_status"></div>
+                        </div>
+                    </div>
+                    <div class="card-datatable table-responsive pt-0">
+                        <table class="user-list-table table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Repeat</th>
+                                    <th>DMR ID</th>
+                                    <th>TX</th>
+                                    <th>RX</th>
+                                    <th>Slot</th>
+                                    <th>Software ID</th>
+                                    <th>Package ID</th>
+                                    <th>CC</th>
+                                    <th>Callsign</th>
+                                    <th>Location</th>
+                                    <th>Connection</th>
+                                    <th>Connected</th>
+                                    <th>IP</th>
+                                    <th>Port</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- Modal to add new user starts-->
+                    <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                        <div class="modal-dialog">
+                            <form class="add-new-user modal-content pt-0">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                                <div class="modal-header mb-1">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Callsign</h5>
+                                </div>
+                                <div class="modal-body flex-grow-1">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-icon-default-name_callsign">Name</label>
+                                        <input type="text" id="basic-icon-default-name_callsign" class="form-control dt-uname" placeholder="John Doe" name="user-name_callsign" required />
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-icon-default-callsign">Callsign</label>
+                                        <input type="text" id="basic-icon-default-callsign" class="form-control dt-uname" placeholder="M3HPZ" name="user-callsign" required />
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-icon-default-email_callsign">Email</label>
+                                        <input type="email" id="basic-icon-default-email_callsign" class="form-control dt-email" placeholder="john.doe@mag.net.id" name="user-email_callsign" required />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary me-1 data-submit">Submit</button>
+                                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            if ($.fn.DataTable.isDataTable('.user-list-table')) {
+                                $('.user-list-table').DataTable().destroy();
+                            }
+
+                            // Tangkap form submit event
+                            $('.add-new-user').submit(function(e) {
+                                e.preventDefault(); // Mencegah form submit default
+                    
+                                // Ambil data dari form
+                                var name = $('#basic-icon-default-name_callsign').val();
+                                var callsign = $('#basic-icon-default-callsign').val();
+                                var email = $('#basic-icon-default-email_callsign').val();
+                                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    
+                                // Tampilkan konfirmasi SweetAlert2
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: 'Do you want to submit this form?',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes',
+                                    cancelButtonText: 'No'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Kirim data ke server
+                                        $.ajax({
+                                            url: '/callsign/store', // Ganti dengan URL rute Anda
+                                            method: 'POST',
+                                            headers: {
+                                                'X-CSRF-TOKEN': csrfToken
+                                            },
+                                            data: {
+                                                // _token: csrfToken,
+                                                name: name,
+                                                callsign: callsign,
+                                                email: email
+                                            },
+                                            success: function(response) {
+                                                // Membersihkan formulir setelah berhasil menambahkan data
+                                                $('.add-new-user')[0].reset();
+                    
+                                                // Tampilkan pesan sukses menggunakan SweetAlert2
+                                                Swal.fire({
+                                                    title: 'Success!',
+                                                    text: 'Callsign has been added successfully.',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        // Tutup modal jika diperlukan
+                                                        $('#modals-slide-in').modal('hide');
+                                                        // Muat ulang tabel jika perlu
+                                                        // ...
+                                                    }
+                                                });
+                                            },
+                                            error: function(xhr, status, error) {
+                                                // Tangani kesalahan jika terjadi
+                                                console.error(xhr.responseText);
+                                                // Tampilkan pesan error kepada pengguna
+                                                // ...
+                                                Swal.fire({
+                                                    title: 'Error!',
+                                                    text: 'Failed to add callsign. Please try again later.',
+                                                    icon: 'error',
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                    <!-- Modal to add new user Ends-->
+                </div>
+                <!-- list and filter end -->
+
+                <!-- list and filter start -->
+                <div class="card">
+                    <div class="card-body border-bottom">
+                        <h4 class="card-title">List Callsign</h4>
+                        <div class="row">
+                            <div class="col-md-4 user_role"></div>
+                            <div class="col-md-4 user_plan"></div>
+                            <div class="col-md-4 user_status"></div>
+                        </div>
+                    </div>
+                    <div class="card-datatable table-responsive pt-0">
+                        <table class="user-list-table table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Repeat</th>
+                                    <th>DMR ID</th>
+                                    <th>TX</th>
+                                    <th>RX</th>
+                                    <th>Slot</th>
+                                    <th>Software ID</th>
+                                    <th>Package ID</th>
+                                    <th>CC</th>
+                                    <th>Callsign</th>
+                                    <th>Location</th>
+                                    <th>Connection</th>
+                                    <th>Connected</th>
+                                    <th>IP</th>
+                                    <th>Port</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- Modal to add new user starts-->
+                    <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                        <div class="modal-dialog">
+                            <form class="add-new-user modal-content pt-0">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                                <div class="modal-header mb-1">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Callsign</h5>
+                                </div>
+                                <div class="modal-body flex-grow-1">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-icon-default-name_callsign">Name</label>
+                                        <input type="text" id="basic-icon-default-name_callsign" class="form-control dt-uname" placeholder="John Doe" name="user-name_callsign" required />
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-icon-default-callsign">Callsign</label>
+                                        <input type="text" id="basic-icon-default-callsign" class="form-control dt-uname" placeholder="M3HPZ" name="user-callsign" required />
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basic-icon-default-email_callsign">Email</label>
+                                        <input type="email" id="basic-icon-default-email_callsign" class="form-control dt-email" placeholder="john.doe@mag.net.id" name="user-email_callsign" required />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary me-1 data-submit">Submit</button>
+                                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            if ($.fn.DataTable.isDataTable('.user-list-table')) {
+                                $('.user-list-table').DataTable().destroy();
+                            }
+
+                            // Tangkap form submit event
+                            $('.add-new-user').submit(function(e) {
+                                e.preventDefault(); // Mencegah form submit default
+                    
+                                // Ambil data dari form
+                                var name = $('#basic-icon-default-name_callsign').val();
+                                var callsign = $('#basic-icon-default-callsign').val();
+                                var email = $('#basic-icon-default-email_callsign').val();
+                                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    
+                                // Tampilkan konfirmasi SweetAlert2
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: 'Do you want to submit this form?',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes',
+                                    cancelButtonText: 'No'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Kirim data ke server
+                                        $.ajax({
+                                            url: '/callsign/store', // Ganti dengan URL rute Anda
+                                            method: 'POST',
+                                            headers: {
+                                                'X-CSRF-TOKEN': csrfToken
+                                            },
+                                            data: {
+                                                // _token: csrfToken,
+                                                name: name,
+                                                callsign: callsign,
+                                                email: email
+                                            },
+                                            success: function(response) {
+                                                // Membersihkan formulir setelah berhasil menambahkan data
+                                                $('.add-new-user')[0].reset();
+                    
+                                                // Tampilkan pesan sukses menggunakan SweetAlert2
+                                                Swal.fire({
+                                                    title: 'Success!',
+                                                    text: 'Callsign has been added successfully.',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        // Tutup modal jika diperlukan
+                                                        $('#modals-slide-in').modal('hide');
+                                                        // Muat ulang tabel jika perlu
+                                                        // ...
+                                                    }
+                                                });
+                                            },
+                                            error: function(xhr, status, error) {
+                                                // Tangani kesalahan jika terjadi
+                                                console.error(xhr.responseText);
+                                                // Tampilkan pesan error kepada pengguna
+                                                // ...
+                                                Swal.fire({
+                                                    title: 'Error!',
+                                                    text: 'Failed to add callsign. Please try again later.',
+                                                    icon: 'error',
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                    <!-- Modal to add new user Ends-->
+                </div>
+                <!-- list and filter end -->
+
             </section>
             <!-- users list ends -->
 
@@ -153,7 +438,7 @@
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="{{asset('prismax/vuexy/app-assets/data/callsign/app-callsign-list.js')}}"></script>
+    <script src="{{asset('prismax/vuexy/app-assets/data/report/app-master-list.js')}}"></script>
     {{-- <script src="{{asset('prismax/vuexy/assets/js/extended-ui-sweetalert2.js')}}"></script> --}}
     <!-- END: Page JS-->
 @endsection

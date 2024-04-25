@@ -38,7 +38,28 @@
                             <div class="col-md-4 user_status"></div>
                         </div>
                     </div>
+                    {{-- <div class="card-datatable table-responsive pt-0">
+                        <table class="user-list-table table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Callsign</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div> --}}
+
                     <div class="card-datatable table-responsive pt-0">
+                        <!-- Checkbox untuk kolom Name dan Callsign -->
+                        <div>
+                            <label><input type="checkbox" id="chkName" checked> Name</label>
+                            <label><input type="checkbox" id="chkCallsign" checked> Callsign</label>
+                        </div>
+                        
+                        <!-- Tabel -->
                         <table class="user-list-table table">
                             <thead class="table-light">
                                 <tr>
@@ -51,6 +72,7 @@
                             </thead>
                         </table>
                     </div>
+
                     <!-- Modal to add new user starts-->
                     <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
                         <div class="modal-dialog">

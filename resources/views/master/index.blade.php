@@ -51,7 +51,7 @@
                         </div>
                         </div>
                     </div>
-                    <div class="col-lg-12 col-md-12 mt-2">
+                    {{-- <div class="col-lg-12 col-md-12 mt-2">
                         <!-- Bootstrap Table with Header - Dark -->
                         <div class="card">
                             <div class="table-responsive text-nowrap">
@@ -115,6 +115,154 @@
                         // Panggil fungsi updateTable() secara berkala setiap 5 detik
                         setInterval(updateTable, 500);
                     });
+                    </script> --}}
+
+                    <div class="col-lg-12 col-md-12 mt-2">
+                        <!-- Checkbox untuk setiap kolom tabel -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary" type="button" id="copyTable">
+                                Copy
+                            </button>
+                            <button class="btn btn-secondary" type="button" onclick="generatePDF()">
+                                Pdf
+                            </button>
+                        </div>
+                        <div>
+                            <label><input type="checkbox" id="chkTime" checked> Time</label>
+                            <label><input type="checkbox" id="chkMode" checked> Mode</label>
+                            <!-- Tambahkan checkbox untuk kolom lainnya -->
+                        </div>
+                        
+                        <!-- Bootstrap Table with Header - Dark -->
+                        <div class="card">
+                            <div class="table-responsive text-nowrap">
+                                <table class="table table-sm" id="lastheard-table">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th id="thTime">Time</th>
+                                            <th id="thMode">Mode</th>
+                                            <!-- Tambahkan th untuk kolom lainnya -->
+                                            <th>Callsign</th>
+                                            <th>Target</th>
+                                            <th>Src</th>
+                                            <th>Dur</th>
+                                            <th>Loss</th>
+                                            <th>BER</th>
+                                            <th>RSSI</th>
+                                            <th>All time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                        <!-- Data akan diisi melalui AJAX -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--/ Bootstrap Table with Header Dark -->
+                    </div>
+                    
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                    <script>
+                        // Inisialisasi ClipboardJS
+                        var clipboard = new ClipboardJS('#copyTable', {
+                            text: function(trigger) {
+                                // Salin data dari tabel
+                                var tableData = [];
+                                $('#lastheard-table tbody tr').each(function() {
+                                    var rowData = [];
+                                    $(this).find('td').each(function() {
+                                        rowData.push($(this).text().trim());
+                                    });
+                                    tableData.push(rowData.join('\t')); // Data baris
+                                });
+                    
+                                return tableData.join('\n'); // Gabungkan semua baris data
+                            }
+                        });
+
+                        // Fungsi untuk membuat file PDF
+                        function generatePDF() {
+                            const { jsPDF } = window.jspdf;
+                            const doc = new jsPDF();
+
+                            // Tambahkan data tabel ke PDF
+                            doc.text(10, 10, 'Data Tabel');
+                            $('#lastheard-table tbody tr').each(function(rowIndex, row) {
+                                var yPos = 20 + (rowIndex * 10);
+                                $(row).find('td').each(function(colIndex, col) {
+                                    doc.text(10 + (colIndex * 50), yPos, $(col).text().trim());
+                                });
+                            });
+
+                            // Simpan PDF
+                            doc.save('table_data.pdf');
+                        }   
+                    </script>
+                    <script>
+                        // Simpan status checkbox di luar fungsi updateTable()
+                        var modeChecked = true; // Secara default, checkbox Mode dicentang
+                        var timeChecked = true; // Secara default, checkbox Time dicentang
+                    
+                        // Fungsi untuk memperbarui data tabel
+                        function updateTable() {
+                            $.ajax({
+                                url: 'http://103.18.133.192:3000/master/lastheard',
+                                method: 'GET',
+                                success: function(response) {
+                                    var tableBody = $('#lastheard-table tbody');
+                                    tableBody.empty(); // Bersihkan isi tabel sebelum mengisi data baru
+                                    $.each(response.data, function(key, data) {
+                                        var row = '<tr>' +
+                                            '<td>' + (timeChecked ? data.time_utc : '') + '</td>' + // Tampilkan time hanya jika checkbox dicentang
+                                            '<td>' + (modeChecked ? data.mode : '') + '</td>' + // Tampilkan mode hanya jika checkbox dicentang
+                                            // Tambahkan td untuk kolom lainnya
+                                            '<td>' + data.callsign + '</td>' +
+                                            '<td>' + data.target + '</td>' +
+                                            '<td>' + data.src + '</td>' +
+                                            '<td>' + data.duration + '</td>' +
+                                            '<td>' + data.loss + '</td>' +
+                                            '<td>' + data.bit_error_rate + '</td>' +
+                                            '<td>' + data.rssi + '</td>' +
+                                            '<td>' + data.total_duration + ' min' + '</td>' +
+                                            '</tr>';
+                    
+                                        tableBody.append(row); // Tambahkan baris ke tabel
+                                    });
+                                    
+                                    // Atur visibilitas kolom "Time" dan "Mode" berdasarkan status checkbox "Time" dan "Mode"
+                                    var timeColumnIndex = $('#lastheard-table th:contains("Time")').index() + 1;
+                                    var modeColumnIndex = $('#lastheard-table th:contains("Mode")').index() + 1;
+                                    if (timeChecked) {
+                                        $('#lastheard-table th:nth-child(' + timeColumnIndex + '), #lastheard-table td:nth-child(' + timeColumnIndex + ')').show();
+                                    } else {
+                                        $('#lastheard-table th:nth-child(' + timeColumnIndex + '), #lastheard-table td:nth-child(' + timeColumnIndex + ')').hide();
+                                    }
+                                    if (modeChecked) {
+                                        $('#lastheard-table th:nth-child(' + modeColumnIndex + '), #lastheard-table td:nth-child(' + modeColumnIndex + ')').show();
+                                    } else {
+                                        $('#lastheard-table th:nth-child(' + modeColumnIndex + '), #lastheard-table td:nth-child(' + modeColumnIndex + ')').hide();
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error:', error);
+                                }
+                            });
+                        }
+                    
+                        // Panggil fungsi updateTable() secara berkala setiap 500 ms
+                        setInterval(updateTable, 500);
+                    
+                        // Tambahkan event listener untuk checkbox Mode
+                        $('#chkMode').change(function() {
+                            modeChecked = $(this).is(':checked'); // Perbarui status checkbox
+                        });
+                    
+                        // Tambahkan event listener untuk checkbox Time
+                        $('#chkTime').change(function() {
+                            timeChecked = $(this).is(':checked'); // Perbarui status checkbox
+                        });
                     </script>
                 </div>
                 <!-- Cards Draggable -->
