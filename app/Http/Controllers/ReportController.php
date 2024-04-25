@@ -22,8 +22,7 @@ class ReportController extends Controller
         $live_count = $lives['start_count'];
 
         $masters = Master::all();
-        $callsigns = Callsign::all();
-        return view('reports.index', compact('callsign_count', 'master_count', 'lastheard_count', 'live_count', 'masters', 'callsigns'));
+        return view('reports.index', compact('callsign_count', 'master_count', 'lastheard_count', 'live_count', 'masters'));
     }
 
     public function getDataByNames()
@@ -96,6 +95,18 @@ class ReportController extends Controller
 
         return response()->json([
             'data' => $mastersArray
+        ]);
+    }
+
+    public function callsign(Request $request)
+    {
+        $callsigns = Callsign::orderBy('id', 'desc')->get();
+
+        // Mengonversi koleksi model menjadi array
+        $callsignsArray = $callsigns->toArray();
+
+        return response()->json([
+            'data' => $callsignsArray
         ]);
     }
 }
