@@ -31,6 +31,7 @@ Route::get('/analytics', [AnalyticController::class, 'index'])->name('analytic.i
 
 Route::get('/report', [ReportController::class, 'index'])->name('report.index');
 Route::get('/report/master', [ReportController::class, 'master']);
+Route::get('/report/callsign', [ReportController::class, 'callsign']);
 
 Route::get('/hbmonitor', [HBMonitorController::class, 'index'])->name('hbmonitor.index');
 Route::get('/pistar', [PistarController::class, 'index'])->name('pistar.index');

@@ -22,7 +22,8 @@ class ReportController extends Controller
         $live_count = $lives['start_count'];
 
         $masters = Master::all();
-        return view('reports.index', compact('callsign_count', 'master_count', 'lastheard_count', 'live_count', 'masters'));
+        $callsigns = Callsign::all();
+        return view('reports.index', compact('callsign_count', 'master_count', 'lastheard_count', 'live_count', 'masters', 'callsigns'));
     }
 
     public function getDataByNames()

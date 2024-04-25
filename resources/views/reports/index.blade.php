@@ -222,38 +222,42 @@
                 <!-- list and filter start -->
                 <div class="card">
                     <div class="card-body border-bottom">
-                        <h4 class="card-title">List Callsign</h4>
+                        <h4 class="card-title">Search</h4>
                         <div class="row">
                             <div class="col-md-4 user_role"></div>
                             <div class="col-md-4 user_plan"></div>
                             <div class="col-md-4 user_status"></div>
                         </div>
                     </div>
-                    <div class="card-datatable table-responsive pt-0">
+                    {{-- <div class="card-datatable table-responsive pt-0">
                         <table class="user-list-table table">
                             <thead class="table-light">
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
-                                    <th>Repeat</th>
-                                    <th>DMR ID</th>
-                                    <th>TX</th>
-                                    <th>RX</th>
-                                    <th>Slot</th>
-                                    <th>Software ID</th>
-                                    <th>Package ID</th>
-                                    <th>CC</th>
                                     <th>Callsign</th>
-                                    <th>Location</th>
-                                    <th>Connection</th>
-                                    <th>Connected</th>
-                                    <th>IP</th>
-                                    <th>Port</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div> --}}
+
+                    <div class="card-datatable table-responsive pt-0">
+                        <!-- Tabel -->
+                        <table class="user-list-table table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Callsign</th>
+                                    <th>Email</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
+
                     <!-- Modal to add new user starts-->
                     <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
                         <div class="modal-dialog">
@@ -439,6 +443,7 @@
 
     <!-- BEGIN: Page JS-->
     <script src="{{asset('prismax/vuexy/app-assets/data/report/app-master-list.js')}}"></script>
+    <script src="{{asset('prismax/vuexy/app-assets/data/report/app-callsign-list.js')}}"></script>
     {{-- <script src="{{asset('prismax/vuexy/assets/js/extended-ui-sweetalert2.js')}}"></script> --}}
     <!-- END: Page JS-->
 @endsection
