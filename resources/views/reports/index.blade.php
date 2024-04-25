@@ -222,7 +222,7 @@
                 <!-- list and filter start -->
                 <div class="card">
                     <div class="card-body border-bottom">
-                        <h4 class="card-title">Search</h4>
+                        <h4 class="card-title">List Callsign</h4>
                         <div class="row">
                             <div class="col-md-4 user_role"></div>
                             <div class="col-md-4 user_plan"></div>
@@ -245,7 +245,7 @@
 
                     <div class="card-datatable table-responsive pt-0">
                         <!-- Tabel -->
-                        <table class="user-list-table table">
+                        <table class="callsign-list-table table">
                             <thead class="table-light">
                                 <tr>
                                     <th></th>
@@ -287,8 +287,8 @@
                     </div>
                     <script>
                         $(document).ready(function() {
-                            if ($.fn.DataTable.isDataTable('.user-list-table')) {
-                                $('.user-list-table').DataTable().destroy();
+                            if ($.fn.DataTable.isDataTable('.callsign-list-table')) {
+                                $('.callsign-list-table').DataTable().destroy();
                             }
 
                             // Tangkap form submit event

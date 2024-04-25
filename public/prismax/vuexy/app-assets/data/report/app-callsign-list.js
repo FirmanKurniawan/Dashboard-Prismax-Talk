@@ -1,7 +1,7 @@
 $(function () {
   ('use strict');
 
-  var dtUserTable = $('.user-list-table'),
+  var dtUserTable = $('.callsign-list-table'),
     newUserSidebar = $('.new-user-modal'),
     newUserForm = $('.add-new-user'),
     select = $('.select2'),
