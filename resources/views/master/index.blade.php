@@ -368,7 +368,7 @@
                                         if(master[2] && master[2].status == "START"){
                                             backgroundLiveElement2.style.backgroundColor = '#ff6600';
                                             backgroundLiveElement2.style.color = 'white';
-                                            document.getElementById('source2-' + masterName).innerText = master[2].callsign + "\n" + "master[2].callsign_detail["name"]";
+                                            document.getElementById('source2-' + masterName).innerText = master[2].callsign + "\n" + "master[2].callsign_detail[name]";
                                             document.getElementById('spinner2-' + masterName).style.display = "inline-block";
                                         }else if(master[2] && master[2].status == "END"){
                                             backgroundLiveElement2.style.backgroundColor = '#ffffff';
