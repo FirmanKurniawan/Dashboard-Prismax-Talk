@@ -21,4 +21,9 @@ class Lastheard extends Model
         'bit_error_rate',
         'rssi',
     ];
+
+    public function callsignDetail()
+    {
+        return $this->belongsTo(Callsign::class, 'callsign', 'callsign');
+    }
 }

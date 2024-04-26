@@ -142,6 +142,7 @@
                                             <th id="thTime">Time</th>
                                             <th id="thMode">Mode</th>
                                             <!-- Tambahkan th untuk kolom lainnya -->
+                                            <th>Name</th>
                                             <th>Callsign</th>
                                             <th>Target</th>
                                             <th>Src</th>
@@ -218,6 +219,7 @@
                                             '<td>' + (timeChecked ? data.time_utc : '') + '</td>' + // Tampilkan time hanya jika checkbox dicentang
                                             '<td>' + (modeChecked ? data.mode : '') + '</td>' + // Tampilkan mode hanya jika checkbox dicentang
                                             // Tambahkan td untuk kolom lainnya
+                                            '<td>' + data.callsign_detail.name + '</td>' +
                                             '<td>' + data.callsign + '</td>' +
                                             '<td>' + data.target + '</td>' +
                                             '<td>' + data.src + '</td>' +

@@ -220,39 +220,76 @@ class MasterController extends Controller
         return $this->belongsTo(Callsign::class, 'callsign', 'callsign');
     }
 
+    // public function lastheard(Request $request)
+    // {
+    //     // Mendapatkan tanggal hari ini
+    //     $today = Carbon::today();
+
+    //     // Mengambil data terakhir dari tabel Lastheard berdasarkan hari ini
+    //     $lastheards = Lastheard::select('callsign', 'time_utc', 'mode', 'callsign_suffix', 'target', 'src', 'duration', 'loss', 'bit_error_rate', 'rssi')
+    //                             ->whereDate('time_utc', $today)
+    //                             ->orderBy('id', 'desc')
+    //                             ->get();
+
+    //     // Menghitung total_duration berdasarkan callsign
+    //     $totalDurationByCallsign = Lastheard::select('callsign', DB::raw('SUM(duration) as total_duration'))
+    //                                         ->whereDate('time_utc', $today)
+    //                                         ->groupBy('callsign')
+    //                                         ->pluck('total_duration', 'callsign');
+
+    //     // Mengonversi koleksi model menjadi array
+    //     $lastheardsArray = $lastheards->unique('callsign')->toArray();
+
+    //     // Menambahkan total_duration ke setiap entri dalam array data
+    //     foreach ($lastheardsArray as &$data) {
+    //         $callsign = $data['callsign'];
+    //         $totalDurationInSeconds = isset($totalDurationByCallsign[$callsign]) ? $totalDurationByCallsign[$callsign] : 0;
+    //         // Konversi total duration dari detik menjadi menit
+    //         $data['total_duration'] = round($totalDurationInSeconds / 60, 2); // Pembulatan hingga 2 desimal
+    //     }
+
+    //     // Ambil 10 data teratas
+    //     $lastheardsArrayLimited = array_slice($lastheardsArray, 0, 10);
+
+    //     return response()->json([
+    //         'data' => $lastheardsArrayLimited
+    //     ]);
+    // }
+
     public function lastheard(Request $request)
-    {
-        // Mendapatkan tanggal hari ini
-        $today = Carbon::today();
+{
+    // Mendapatkan tanggal hari ini
+    $today = Carbon::today();
 
-        // Mengambil data terakhir dari tabel Lastheard berdasarkan hari ini
-        $lastheards = Lastheard::select('callsign', 'time_utc', 'mode', 'callsign_suffix', 'target', 'src', 'duration', 'loss', 'bit_error_rate', 'rssi')
-                                ->whereDate('time_utc', $today)
-                                ->orderBy('id', 'desc')
-                                ->get();
+    // Mengambil data terakhir dari tabel Lastheard berdasarkan hari ini
+    $lastheards = Lastheard::with('callsignDetail') // Load callsignDetail relation
+                            ->select('callsign', 'time_utc', 'mode', 'callsign_suffix', 'target', 'src', 'duration', 'loss', 'bit_error_rate', 'rssi')
+                            ->whereDate('time_utc', $today)
+                            ->orderBy('id', 'desc')
+                            ->get();
 
-        // Menghitung total_duration berdasarkan callsign
-        $totalDurationByCallsign = Lastheard::select('callsign', DB::raw('SUM(duration) as total_duration'))
-                                            ->whereDate('time_utc', $today)
-                                            ->groupBy('callsign')
-                                            ->pluck('total_duration', 'callsign');
+    // Menghitung total_duration berdasarkan callsign
+    $totalDurationByCallsign = Lastheard::select('callsign', DB::raw('SUM(duration) as total_duration'))
+                                        ->whereDate('time_utc', $today)
+                                        ->groupBy('callsign')
+                                        ->pluck('total_duration', 'callsign');
 
-        // Mengonversi koleksi model menjadi array
-        $lastheardsArray = $lastheards->unique('callsign')->toArray();
+    // Mengonversi koleksi model menjadi array
+    $lastheardsArray = $lastheards->unique('callsign')->toArray();
 
-        // Menambahkan total_duration ke setiap entri dalam array data
-        foreach ($lastheardsArray as &$data) {
-            $callsign = $data['callsign'];
-            $totalDurationInSeconds = isset($totalDurationByCallsign[$callsign]) ? $totalDurationByCallsign[$callsign] : 0;
-            // Konversi total duration dari detik menjadi menit
-            $data['total_duration'] = round($totalDurationInSeconds / 60, 2); // Pembulatan hingga 2 desimal
-        }
-
-        // Ambil 10 data teratas
-        $lastheardsArrayLimited = array_slice($lastheardsArray, 0, 10);
-
-        return response()->json([
-            'data' => $lastheardsArrayLimited
-        ]);
+    // Menambahkan total_duration ke setiap entri dalam array data
+    foreach ($lastheardsArray as &$data) {
+        $callsign = $data['callsign'];
+        $totalDurationInSeconds = isset($totalDurationByCallsign[$callsign]) ? $totalDurationByCallsign[$callsign] : 0;
+        // Konversi total duration dari detik menjadi menit
+        $data['total_duration'] = round($totalDurationInSeconds / 60, 2); // Pembulatan hingga 2 desimal
     }
+
+    // Ambil 10 data teratas
+    $lastheardsArrayLimited = array_slice($lastheardsArray, 0, 10);
+
+    return response()->json([
+        'data' => $lastheardsArrayLimited
+    ]);
+}
 }
