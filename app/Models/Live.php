@@ -19,4 +19,9 @@ class Live extends Model
         'slot',
         'duration',
     ];
+
+    public function callsignDetail()
+    {
+        return $this->belongsTo(Callsign::class, 'callsign', 'callsign');
+    }
 }

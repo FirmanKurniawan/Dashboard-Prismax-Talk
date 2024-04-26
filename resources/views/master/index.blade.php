@@ -301,9 +301,9 @@
                                             SLOT 1
                                         </h6>
                                         <p>
-                                            <span style="display:inline-block; width: 100px;">Source</span>: <span id="source-{{$master->name}}">.....</span>
+                                            <span style="display:inline-block; width: auto">Source</span>: <span id="source-{{$master->name}}">.....</span>
                                             <br> 
-                                            <span style="display:inline-block; width: 100px;">Destination</span>: <span id="destination-{{$master->name}}">.....</span>
+                                            <span style="display:inline-block; width: auto">Destination</span>: <span id="destination-{{$master->name}}">.....</span>
                                         </p>
                                     </div>
                                     <div id="background-live2-{{$master->name}}" class="col-6">
@@ -314,9 +314,9 @@
                                             SLOT 2
                                         </h6>
                                         <p>
-                                            <span style="display:inline-block; width: 100px;">Source</span>: <span id="source2-{{$master->name}}">.....</span>
+                                            <span style="display:inline-block; width: auto">Source</span>: <span id="source2-{{$master->name}}">.....</span>
                                             <br> 
-                                            <span style="display:inline-block; width: 100px;">Destination</span>: <span id="destination2-{{$master->name}}">.....</span>
+                                            <span style="display:inline-block; width: auto">Destination</span>: <span id="destination2-{{$master->name}}">.....</span>
                                         </p>
                                     </div>
                                 </div>
@@ -331,7 +331,8 @@
                     // Function to fetch live data from API and update source and destination every second
                     function updateLiveData() {
                         setInterval(function() {
-                            fetch('http://103.18.133.192:3000/master/live_data')
+                            // fetch('http://103.18.133.192:3000/master/live_data')
+                            fetch('http://127.0.0.1:8000/master/live_data')
                             .then(response => response.json())
                             .then(data => {
                                 // Loop through the received data and update source and destination
@@ -346,7 +347,7 @@
                                         if (master[1] && master[1].status == "START") {
                                             backgroundLiveElement.style.backgroundColor = '#ff6600';
                                             backgroundLiveElement.style.color = 'white';
-                                            document.getElementById('source-' + masterName).innerText = master[1].callsign;
+                                            document.getElementById('source-' + masterName).innerText = master[1].callsign + "\n" + "master[1].callsign_detail.name";
                                             document.getElementById('spinner-' + masterName).style.display = "inline-block";
                                             // console.log(master[2].callsign)
                                         }else if(master[1] && master[1].status == "END"){
@@ -367,7 +368,7 @@
                                         if(master[2] && master[2].status == "START"){
                                             backgroundLiveElement2.style.backgroundColor = '#ff6600';
                                             backgroundLiveElement2.style.color = 'white';
-                                            document.getElementById('source2-' + masterName).innerText = master[2].callsign;
+                                            document.getElementById('source2-' + masterName).innerText = master[2].callsign + "\n" + "master[2].callsign_detail.name";
                                             document.getElementById('spinner2-' + masterName).style.display = "inline-block";
                                         }else if(master[2] && master[2].status == "END"){
                                             backgroundLiveElement2.style.backgroundColor = '#ffffff';

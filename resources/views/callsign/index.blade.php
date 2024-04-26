@@ -54,10 +54,10 @@
 
                     <div class="card-datatable table-responsive pt-0">
                         <!-- Checkbox untuk kolom Name dan Callsign -->
-                        <div>
+                        {{-- <div>
                             <label><input type="checkbox" id="chkName" checked> Name</label>
                             <label><input type="checkbox" id="chkCallsign" checked> Callsign</label>
-                        </div>
+                        </div> --}}
                         
                         <!-- Tabel -->
                         <table class="user-list-table table">

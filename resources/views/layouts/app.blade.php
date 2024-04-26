@@ -249,7 +249,7 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a class="d-flex align-items-center" href="/"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a>
+                {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="/"><i data-feather="home"></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span></a> --}}
                 <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Features</span><i data-feather="more-horizontal"></i>
                 </li>
                 </li>
@@ -264,8 +264,8 @@
                 <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('master.index') }}"><i data-feather="monitor"></i><span class="menu-title text-truncate" data-i18n="File Manager">Monitoring</span></a>
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('analytic.index') }}"><i data-feather="pie-chart"></i><span class="menu-title text-truncate" data-i18n="File Manager">Analisis</span></a>
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('report.index') }}"><i data-feather="book-open"></i><span class="menu-title text-truncate" data-i18n="File Manager">Report</span></a>
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('hbmonitor.index') }}"><i data-feather="radio"></i><span class="menu-title text-truncate" data-i18n="File Manager">HBMonitor</span></a>
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('pistar.index') }}"><i data-feather="radio"></i><span class="menu-title text-truncate" data-i18n="File Manager">PiStar</span></a>
+                    {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('hbmonitor.index') }}"><i data-feather="radio"></i><span class="menu-title text-truncate" data-i18n="File Manager">HBMonitor</span></a> --}}
+                    {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('pistar.index') }}"><i data-feather="radio"></i><span class="menu-title text-truncate" data-i18n="File Manager">PiStar</span></a> --}}
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('callsign.index') }}"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="File Manager">Callsign</span></a>
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('lastheard.index') }}"><i data-feather="target"></i><span class="menu-title text-truncate" data-i18n="File Manager">All Lastheard</span></a>
                     {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('order.index') }}"><i data-feather="dollar-sign"></i><span class="menu-title text-truncate" data-i18n="File Manager">Order</span></a> --}}

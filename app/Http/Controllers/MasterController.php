@@ -93,6 +93,51 @@ class MasterController extends Controller
         return response()->json($lives);
     }
 
+    // public function getDataByNames()
+    // {
+    //     // Ambil semua nama unik dari tabel masters
+    //     $masterNames = Master::pluck('name')->toArray();
+
+    //     // Buat array kosong untuk menyimpan hasil
+    //     $dataByNames = [];
+
+    //     // Iterasi melalui setiap nama master
+    //     foreach ($masterNames as $name) {
+    //         // Ambil data terakhir untuk setiap slot dari nama master ini dalam tabel live
+    //         $latestSlotData = Live::where('name', $name)
+    //             ->whereIn('slot', [1, 2])
+    //             ->orderByDesc('id') // Sort by id descending
+    //             ->get();
+
+    //         // Buat array kosong untuk menyimpan detail dari masing-masing slot
+    //         $slotData = [
+    //             1 => null,
+    //             2 => null,
+    //         ];
+
+    //         // Iterasi melalui data terakhir untuk nama master ini
+    //         foreach ($latestSlotData as $data) {
+    //             // Cek apakah slot ini memiliki data sebelumnya
+    //             if (!$slotData[$data->slot]) {
+    //                 // Jika tidak ada data sebelumnya, gunakan data ini
+    //                 $slotData[$data->slot] = [
+    //                     'status' => $data->status,
+    //                     'rx_tx' => $data->rx_tx,
+    //                     'dmr_id_master' => $data->dmr_id_master,
+    //                     'callsign' => $data->callsign,
+    //                     'slot' => $data->slot,
+    //                     'duration' => $data->duration,
+    //                 ];
+    //             }
+    //         }
+
+    //         // Simpan detail slotData untuk nama master ini ke dalam array dataByNames
+    //         $dataByNames[$name] = $slotData;
+    //     }
+
+    //     return $dataByNames;
+    // }
+    
     public function getDataByNames()
     {
         // Ambil semua nama unik dari tabel masters
@@ -102,9 +147,9 @@ class MasterController extends Controller
         $dataByNames = [];
 
         // Iterasi melalui setiap nama master
-        foreach ($masterNames as $name) {
+        foreach ($masterNames as $masterName) {
             // Ambil data terakhir untuk setiap slot dari nama master ini dalam tabel live
-            $latestSlotData = Live::where('name', $name)
+            $latestSlotData = Live::where('name', $masterName)
                 ->whereIn('slot', [1, 2])
                 ->orderByDesc('id') // Sort by id descending
                 ->get();
@@ -128,11 +173,27 @@ class MasterController extends Controller
                         'slot' => $data->slot,
                         'duration' => $data->duration,
                     ];
+
+                    // Jika callsignDetail tersedia, tambahkan detail callsign
+                    if ($data->callsignDetail) {
+                        // Menambahkan detail callsign ke dalam data
+                        $slotData[$data->slot]['callsign_detail'] = [
+                            'name' => $data->callsignDetail->name,
+                            'email' => $data->callsignDetail->email,
+                            // Tambahkan atribut lain dari model Callsign yang Anda inginkan
+                        ];
+                    } else {
+                        // Jika callsignDetail tidak tersedia, atur callsign_detail menjadi objek dengan properti name dan email yang memiliki nilai null
+                        $slotData[$data->slot]['callsign_detail'] = [
+                            'name' => null,
+                            'email' => null,
+                        ];
+                    }
                 }
             }
 
             // Simpan detail slotData untuk nama master ini ke dalam array dataByNames
-            $dataByNames[$name] = $slotData;
+            $dataByNames[$masterName] = $slotData;
         }
 
         return $dataByNames;
@@ -152,6 +213,11 @@ class MasterController extends Controller
         }
 
         return $startCount;
+    }
+
+    public function callsignDetail()
+    {
+        return $this->belongsTo(Callsign::class, 'callsign', 'callsign');
     }
 
     public function lastheard(Request $request)
