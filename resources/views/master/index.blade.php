@@ -267,8 +267,161 @@
                         });
                     </script>
                 </div>
+
+                {{-- FIX --}}
+                <!-- View sales -->
+                <div class="col-lg-12 order-3 order-xl-0">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding-bottom: 5px;"> <!-- Mengurangi padding-bottom -->
+                            <h5 class="card-title mb-1">MASTER-1</h5>
+                            <h5>
+                                (DMR ID: 00000)
+                                (DMR ID: 00000) 
+                            </h5>
+                            <p class="mb-2">
+                                0h 0m
+                                - 
+                                no location
+                            </p>
+                            <!-- Peers -->
+                            <div class="row" id="peerData">
+                                <!-- Peer data will be loaded dynamically here -->
+                            </div>
+                            <!-- End Peers -->
+                        </div>
+                    </div>
+                </div>
+                <!-- View sales -->
+
+                <script>
+                    // Function to fetch and render peer data
+                    function fetchAndRenderPeers() {
+                        // Fetch data from the API endpoint
+                        fetch('http://103.18.133.192:3000/master/live_data')
+                            .then(response => response.json())
+                            .then(data => {
+                                // Initialize an empty HTML string to store the peer data
+                                let peerHtml = '';
+
+                                // Iterate through each master and its peers
+                                data.forEach(master => {
+                                    if (master.name === 'MASTER-1') { // Check if the master name is MASTER-1
+                                        master.peers.forEach(peer => {
+                                            // Append HTML for each peer
+                                            peerHtml += `
+                                                <div class="col-lg-12">
+                                                    <div id="background-live-${master.name}-${peer.id}" class="card">
+                                                        <div class="card-body text-center" style="padding: 0px;">
+                                                            <img src="../../prismax/vuexy/assets/images/mmdvm-duplex.png" height="80" width="50">
+                                                            <div class="row">
+                                                                <!-- Slot 1 -->
+                                                                <div class="col-6">
+                                                                    <h6>
+                                                                        <div id="spinner-${master.name}-${peer.id}-1" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;">
+                                                                        </div>  
+                                                                        SLOT 1
+                                                                    </h6>
+                                                                    <span style="display:inline-block; width: auto">Source</span>: 10001 (FIRMAN)
+                                                                    <br> 
+                                                                    <span style="display:inline-block; width: auto">Destination</span>: 10001
+                                                                </div>
+                                                                <!-- Slot 2 -->
+                                                                <div class="col-6">
+                                                                    <h6>
+                                                                        <div id="spinner2-${master.name}-${peer.id}-2" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;">
+                                                                            <span class="visually-hidden">Loading...</span>
+                                                                        </div>
+                                                                        SLOT 2
+                                                                    </h6>
+                                                                    <span style="display:inline-block; width: auto">Source</span>: 10002 (JAJANG)
+                                                                    <br> 
+                                                                    <span style="display:inline-block; width: auto">Destination</span>: 10002
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr style="color: red">
+                                                    </div>
+                                                </div>
+                                            `;
+                                        });
+                                    }
+                                });
+
+                                // Inject the peer HTML into the DOM
+                                document.getElementById('peerData').innerHTML = peerHtml;
+                            })
+                            .catch(error => console.error('Error fetching peer data:', error));
+                    }
+
+                    // Call fetchAndRenderPeers function initially
+                    fetchAndRenderPeers();
+
+                    // Set interval to fetch and render peer data every 1 second
+                    setInterval(fetchAndRenderPeers, 10000);
+                </script>
+                {{-- <!-- View sales -->
+                <div class="col-lg-12 order-3 order-xl-0">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding-bottom: 5px;"> <!-- Mengurangi padding-bottom -->
+                            <h5 class="card-title mb-1">MASTER-1</h5>
+                            <h5>
+                                (DMR ID: 00000)
+                                (DMR ID: 00000) 
+                            </h5>
+                            <p class="mb-2">
+                                0h 0m
+                                - 
+                                no location
+                            </p>
+                            <!-- Peers -->
+                            <div class="row">
+                                @foreach ($masters as $index => $master)
+                                    @foreach ($master->peers as $peer)
+                                        <div class="col-lg-12">
+                                            <div id="background-live-{{$master->name}}-{{$peer->id}}" class="card">
+                                                <div class="card-body text-center" style="padding: 0px;">
+                                                    <img src="../../prismax/vuexy/assets/images/mmdvm-duplex.png" height="80" width="50">
+                                                    <div class="row">
+                                                        <!-- Slot 1 -->
+                                                        <div class="col-6">
+                                                            <h6>
+                                                                <div id="spinner-{{$master->name}}-{{$peer->id}}-1" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;">
+                                                                </div>  
+                                                                SLOT 1
+                                                            </h6>
+                                                            <span style="display:inline-block; width: auto">Source</span>: 10001 (FIRMAN)
+                                                            <br> 
+                                                            <span style="display:inline-block; width: auto">Destination</span>: 10001
+                                                        </div>
+                                                        <!-- Slot 2 -->
+                                                        <div class="col-6">
+                                                            <h6>
+                                                                <div id="spinner2-{{$master->name}}-{{$peer->id}}-2" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;">
+                                                                    <span class="visually-hidden">Loading...</span>
+                                                                </div>
+                                                                SLOT 2
+                                                            </h6>
+                                                            <span style="display:inline-block; width: auto">Source</span>: 10002 (JAJANG)
+                                                            <br> 
+                                                            <span style="display:inline-block; width: auto">Destination</span>: 10002
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr style="color: red">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endforeach
+                            </div>
+                            <!-- End Peers -->
+                        </div>
+                    </div>
+                </div>
+                <!-- View sales --> --}}
+                {{-- END FIX --}}
+
                 <!-- Cards Draggable -->
-                <div class="row mb-4" id="sortable-cards">
+                {{-- <div class="row mb-4" id="sortable-cards">
                     <!-- View sales -->
                     @foreach ($masters as $master)
                     <div class="col-lg-6 order-3 order-xl-0">
@@ -394,7 +547,7 @@
                 
                     // Call the function to start updating live data
                     updateLiveData();
-                </script>                
+                </script>                 --}}
                 <!-- /Cards Draggable ends -->
                 <!-- list and filter start -->
                 {{-- <div class="card">
