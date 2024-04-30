@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Master extends Model
+class PeerSlot extends Model
 {
     use HasFactory;
 
-    public function peers()
+    public function peer()
     {
-        return $this->hasMany(Peer::class);
+        return $this->belongsTo(Peer::class);
     }
 }
