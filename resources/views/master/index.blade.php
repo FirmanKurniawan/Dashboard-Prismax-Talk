@@ -287,7 +287,7 @@
                                 // Clear previous HTML
                                 const container = document.querySelector('.card-body');
                                 container.innerHTML = '';
-                
+
                                 // Iterate over each master
                                 data.forEach(master => {
                                     // Create HTML for master
@@ -305,6 +305,14 @@
                                             let connectedText = peer.connected ? peer.connected : "";
                                             let locationText = peer.location ? peer.location : "";
 
+                                            // Determine background color
+                                            let backgroundColorSlot1 = peer.slots[0].sub ? 'background-color: #e5f9e8;' : '';
+                                            let backgroundColorSlot2 = peer.slots[1].sub ? 'background-color: #e5f9e8;' : '';
+
+                                            // Determine display for spinner grow
+                                            let displaySpinner1 = peer.slots[0].sub ? '' : 'display: none;';
+                                            let displaySpinner2 = peer.slots[1].sub ? '' : 'display: none;';
+
                                             // Create HTML for each peer
                                             masterHtml += `
                                                 <h5>${peer.callsign} (DMR ID: ${peer.dmr_id})</h5>
@@ -315,9 +323,9 @@
                                                             <img src="../../prismax/vuexy/assets/images/mmdvm-duplex.png" height="80" width="50">
                                                             <div class="row">
                                                                 <!-- Slot 1 -->
-                                                                <div class="col-6">
+                                                                <div class="col-6" style="${backgroundColorSlot1}">
                                                                     <h6>
-                                                                        <div id="spinner-${master.name}-${peer.id}-1" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;"></div>  
+                                                                        <div id="spinner-${master.name}-${peer.id}-1" class="spinner-grow spinner-grow-sm text-success" role="status" style="${displaySpinner1}"></div>  
                                                                         SLOT 1
                                                                     </h6>
                                                                     <span style="display:inline-block; width: auto">Source</span>:  ${peer.slots[0].sub}
@@ -325,9 +333,9 @@
                                                                     <span style="display:inline-block; width: auto">Destination</span>: ${peer.slots[0].dest}
                                                                 </div>
                                                                 <!-- Slot 2 -->
-                                                                <div class="col-6">
+                                                                <div class="col-6" style="${backgroundColorSlot2}">
                                                                     <h6>
-                                                                        <div id="spinner2-${master.name}-${peer.id}-2" class="spinner-grow spinner-grow-sm text-success" role="status" style="display: none;">
+                                                                        <div id="spinner2-${master.name}-${peer.id}-2" class="spinner-grow spinner-grow-sm text-success" role="status" style="${displaySpinner2}">
                                                                             <span class="visually-hidden">Loading...</span>
                                                                         </div>
                                                                         SLOT 2
@@ -348,7 +356,7 @@
                                         masterHtml += `
                                         `;
                                     }
-                
+
                                     // Add additional HTML for master
                                     masterHtml += `
                                         <!-- Peers -->
@@ -357,17 +365,17 @@
                                         </div>
                                         <!-- End Peers -->
                                     `;
-                
+
                                     // Append master HTML to the container
                                     container.innerHTML += masterHtml;
                                 });
                             })
                             .catch(error => console.error('Error fetching data:', error));
                     }
-                
+
                     // Call fetchDataAndUpdate initially
                     fetchDataAndUpdate();
-                
+
                     // Call fetchDataAndUpdate every second
                     setInterval(fetchDataAndUpdate, 1000);
                 </script>
