@@ -219,7 +219,7 @@
                                             '<td>' + (timeChecked ? data.time_utc : '') + '</td>' + // Tampilkan time hanya jika checkbox dicentang
                                             '<td>' + (modeChecked ? data.mode : '') + '</td>' + // Tampilkan mode hanya jika checkbox dicentang
                                             // Tambahkan td untuk kolom lainnya
-                                            '<td>' + data.callsign_detail.name + '</td>' +
+                                            '<td>' + data.callsign_detail + '</td>' +
                                             '<td>' + data.callsign + '</td>' +
                                             '<td>' + data.target + '</td>' +
                                             '<td>' + data.src + '</td>' +
