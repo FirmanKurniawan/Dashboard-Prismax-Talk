@@ -377,7 +377,7 @@
                     fetchDataAndUpdate();
 
                     // Call fetchDataAndUpdate every second
-                    setInterval(fetchDataAndUpdate, 500);
+                    setInterval(fetchDataAndUpdate, 1000);
                 </script>
                 
 
