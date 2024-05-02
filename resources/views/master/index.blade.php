@@ -254,7 +254,7 @@
                         }
                     
                         // Panggil fungsi updateTable() secara berkala setiap 500 ms
-                        setInterval(updateTable, 2000);
+                        setInterval(updateTable, 5000);
                     
                         // Tambahkan event listener untuk checkbox Mode
                         $('#chkMode').change(function() {
@@ -377,7 +377,7 @@
                     fetchDataAndUpdate();
 
                     // Call fetchDataAndUpdate every second
-                    setInterval(fetchDataAndUpdate, 1000);
+                    setInterval(fetchDataAndUpdate, 700);
                 </script>
                 
 
