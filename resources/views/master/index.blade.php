@@ -85,7 +85,7 @@
                         // Fungsi untuk memperbarui data tabel
                         function updateTable() {
                             $.ajax({
-                                url: 'http://103.18.133.192:3000/master/lastheard',
+                                url: 'http://103.18.133.192:9001/master/lastheard',
                                 method: 'GET',
                                 success: function(response) {
                                     var tableBody = $('#lastheard-table tbody');
@@ -508,7 +508,7 @@
                     // Function to fetch live data from API and update source and destination every second
                     function updateLiveData() {
                         setInterval(function() {
-                            fetch('http://103.18.133.192:3000/master/live_data')
+                            fetch('http://103.18.133.192:9001/master/live_data')
                             // fetch('http://127.0.0.1:8000/master/live_data')
                             .then(response => response.json())
                             .then(data => {

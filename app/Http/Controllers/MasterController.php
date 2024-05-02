@@ -17,13 +17,13 @@ class MasterController extends Controller
         $master_count = Master::count();
 
         // Ambil data "live" berdasarkan nama master
-        $lives = $this->getDataByNames();
+        // $lives = $this->getDataByNames();
 
         // Tambahkan data "live" ke setiap objek $master
-        foreach ($masters as $master) {
-            $masterData = $lives[$master->name] ?? null;
-            $master->live_data = $masterData;
-        }
+        // foreach ($masters as $master) {
+        //     $masterData = $lives[$master->name] ?? null;
+        //     $master->live_data = $masterData;
+        // }
 
         return view('master.index', compact('masters', 'master_count'));
     }
