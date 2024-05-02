@@ -28,6 +28,11 @@
     <!-- BEGIN: Header-->
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
         <div class="navbar-container d-flex content">
+            <div class="bookmark-wrapper d-flex align-items-center">
+                <ul class="nav navbar-nav d-xl-none">
+                    <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
+                </ul>
+            </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
                 <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i></a></li>
                 <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon" data-feather="search"></i></a>
@@ -268,6 +273,7 @@
                     {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('pistar.index') }}"><i data-feather="radio"></i><span class="menu-title text-truncate" data-i18n="File Manager">PiStar</span></a> --}}
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('callsign.index') }}"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="File Manager">Callsign</span></a>
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('lastheard.index') }}"><i data-feather="target"></i><span class="menu-title text-truncate" data-i18n="File Manager">All Lastheard</span></a>
+                        <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('map.index') }}"><i data-feather="map-pin"></i><span class="menu-title text-truncate" data-i18n="File Manager">Map Tracking</span></a>
                     {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('order.index') }}"><i data-feather="dollar-sign"></i><span class="menu-title text-truncate" data-i18n="File Manager">Order</span></a> --}}
                 </li>
             </ul>

@@ -36,7 +36,7 @@ $(function () {
   if (dtUserTable.length) {
     dtUserTable.DataTable({
       ajax: {
-        url: 'http://103.18.133.192:3000/report/callsign', // Ganti dengan URL API Anda
+        url: 'http://103.18.133.192:9001/report/callsign', // Ganti dengan URL API Anda
         dataSrc: 'data' // Menentukan sumber data dalam respons JSON
       },
       columns: [

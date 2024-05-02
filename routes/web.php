@@ -11,6 +11,7 @@ use App\Http\Controllers\CallsignController;
 use App\Http\Controllers\LastheardController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PistarController;
+use App\Http\Controllers\MapController;
 
 Route::get('/', function () {
     return view('index');
@@ -46,3 +47,5 @@ Route::get('/lastheard/list', [LastheardController::class, 'list']);
 Route::get('/master', [MasterController::class, 'index'])->name('master.index');
 Route::get('/master/live_data', [MasterController::class, 'api_live_data']);
 Route::get('/master/lastheard', [MasterController::class, 'lastheard']);
+
+Route::get('/map', [MapController::class, 'index'])->name('map.index');
