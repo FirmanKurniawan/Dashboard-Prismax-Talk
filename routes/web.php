@@ -53,6 +53,7 @@ Route::get('/map', [MapController::class, 'index'])->name('map.index');
 Route::post('/getGPS', [MapController::class, 'getGPS']);
 Route::get('/getMap', [MapController::class, 'getMap']);
 
-Route::post('/requestGPS', [MapController::class, 'requestGPS']);
+// Route::post('/requestGPS', [MapController::class, 'requestGPS']);
+Route::get('/requestGPS/{data}', [MapController::class, 'requestGPS']);
 Route::get('/checkStatus', [TriggerController::class, 'checkStatus']);
 Route::get('/callbackStatus', [TriggerController::class, 'callbackStatus']);

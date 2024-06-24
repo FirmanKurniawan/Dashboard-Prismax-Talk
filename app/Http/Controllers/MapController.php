@@ -60,10 +60,10 @@ class MapController extends Controller
         return response()->json($maps);
     }
 
-    public function requestGPS(Request $request)
+    public function requestGPS($data)
     {
         // Memisahkan data berdasarkan tanda ";"
-        $split_data = explode(';', $request->data);
+        $split_data = explode(';', $data);
 
         // Memastikan jumlah elemen sesuai dengan format yang diharapkan
         if (count($split_data) != 11) {
