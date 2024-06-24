@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('maps', function (Blueprint $table) {
             $table->id();
             $table->string('id_dmr')->nullable();
-            $table->decimal('latitude', 10, 6)->nullable();
-            $table->decimal('longitude', 10, 6)->nullable();
-            $table->decimal('speed', 10, 2)->nullable();
-            $table->decimal('altitude', 10, 2)->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('speed')->nullable();
+            $table->string('altitude')->nullable();
             $table->string('timestamp')->nullable();
             $table->string('gps_type')->nullable();
-            $table->decimal('angle', 10, 2)->nullable();
+            $table->string('angle')->nullable();
             $table->integer('satellite')->nullable();
             $table->string('quality')->nullable();
             $table->string('name')->nullable();
