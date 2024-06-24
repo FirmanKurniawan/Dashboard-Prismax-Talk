@@ -12,6 +12,7 @@ use App\Http\Controllers\LastheardController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PistarController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\TriggerController;
 
 Route::get('/', function () {
     return view('index');
@@ -49,3 +50,9 @@ Route::get('/master/live_data', [MasterController::class, 'api_live_data']);
 Route::get('/master/lastheard', [MasterController::class, 'lastheard']);
 
 Route::get('/map', [MapController::class, 'index'])->name('map.index');
+Route::post('/getGPS', [MapController::class, 'getGPS']);
+Route::get('/getMap', [MapController::class, 'getMap']);
+
+Route::post('/requestGPS', [MapController::class, 'requestGPS']);
+Route::get('/checkStatus', [TriggerController::class, 'checkStatus']);
+Route::get('/callbackStatus', [TriggerController::class, 'callbackStatus']);

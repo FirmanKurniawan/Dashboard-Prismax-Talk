@@ -4595,40 +4595,143 @@
 //   }
 // });
 
+// $(function () {
+//   'use strict';
+
+//   // Inisialisasi peta dengan koordinat tengah di Jakarta
+//   var map = L.map('basic-map2').setView([-6.898747, 107.743057], 13);
+
+//   // Tambahkan tile layer (OpenStreetMap)
+//   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//   }).addTo(map);
+
+//   // Definisikan ikon kustom
+//   var customIcon = L.icon({
+//     iconUrl: '/prismax/vuexy/assets/images/truck.png', // Ganti dengan URL atau path ke gambar ikon Anda
+//     iconSize: [32, 32], // Sesuaikan ukuran ikon jika perlu
+//     iconAnchor: [16, 32], // Titik anchor ikon (pusat bawah)
+//     popupAnchor: [0, -32] // Titik anchor popup (di atas ikon)
+//   });
+
+//   var isFirstLoad = true; // Variabel untuk mengecek apakah ini load pertama
+
+//   // Fungsi untuk memperbarui marker pada peta
+//   function updateMarkers() {  
+//     $.get('/getMap', function(data) {
+//       // Hapus semua marker yang ada
+//       map.eachLayer(function(layer) {
+//         if (layer instanceof L.Marker) {
+//           map.removeLayer(layer);
+//           // Buat marker dengan ikon baru
+//           map.marker = L.marker([-6.898715, 107.743061], {icon: customIcon2}).addTo(map);
+//         }
+//       });
+
+//       // Fungsi untuk menghasilkan nilai acak dalam range tertentu
+//       function getRandomValue(min, max) {
+//         return Math.floor(Math.random() * (max - min + 1)) + min;
+//       }
+
+//       // Membuat variabel dummy dengan range normal
+//       let speed = getRandomValue(20, 60); // Kecepatan 40-60 km/h
+//       let engineTemp = getRandomValue(60, 80); // Suhu mesin 80-100°C
+//       let rpm = getRandomValue(800, 2000); // RPM 800-1200
+      
+//       // Tambahkan marker untuk setiap pengguna
+//       data.forEach(user => {
+//         L.marker(user.location, { icon: customIcon }).addTo(map).bindPopup(`
+//           SN: ${user.id_dmr}<br>
+//           Name: ${user.name}<br>
+//           Location: ${user.location}<br>
+//           Speed: ${speed} km/h<br>
+//           Engine Temp: ${engineTemp}°C<br>
+//           RPM: ${rpm} 
+//         `);
+//       });
+
+//       // Menghitung batas peta yang memuat semua lokasi pengguna
+//       var bounds = data.map(user => user.location);
+      
+//       // Jika ini load pertama, lakukan fitBounds
+//       if (isFirstLoad) {
+//         map.fitBounds(bounds, { padding: [50, 50] });
+//         isFirstLoad = false; // Set isFirstLoad menjadi false setelah fitBounds dipanggil
+//       }
+//     });
+//   }
+
+//   // Memanggil fungsi updateMarkers() secara berkala setiap 30 detik
+//   setInterval(updateMarkers, 3000);
+
+//   // Memanggil updateMarkers() untuk pertama kali saat halaman dimuat
+//   updateMarkers();
+// });
+
 $(function () {
   'use strict';
 
   // Inisialisasi peta dengan koordinat tengah di Jakarta
-  var map = L.map('basic-map2').setView([-6.2088, 106.8456], 13);
+  var map = new L.map('basic-map2').setView([-6.898747, 107.743057], 13);
 
   // Tambahkan tile layer (OpenStreetMap)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  // Array untuk menyimpan lokasi pengguna
-  var users = [
-      { name: 'User 1', location: [-6.1907494, 106.7622381] },
-      { name: 'User 2', location: [-6.1907936, 106.7630627] },
-      { name: 'User 3', location: [-6.1908536, 106.7632424] },
-      { name: 'User 4', location: [-6.1914074, 106.7635325] },
-      { name: 'User 5', location: [-6.1924314, 106.7653135] }
-  ];
-
   // Definisikan ikon kustom
   var customIcon = L.icon({
-    iconUrl: '/prismax/vuexy/assets/images/HT-PRISMAX.png', // Ganti dengan URL atau path ke gambar ikon Anda
+    iconUrl: '/prismax/vuexy/assets/images/truck.png', // Ganti dengan URL atau path ke gambar ikon Anda
     iconSize: [32, 32], // Sesuaikan ukuran ikon jika perlu
     iconAnchor: [16, 32], // Titik anchor ikon (pusat bawah)
     popupAnchor: [0, -32] // Titik anchor popup (di atas ikon)
   });
 
-  // Tambahkan marker untuk setiap pengguna
-  users.forEach(user => {
-    L.marker(user.location, { icon: customIcon }).addTo(map).bindPopup(user.name);
-  });
+  var isFirstLoad = true; // Variabel untuk mengecek apakah ini load pertama
+  var markerGroup = L.layerGroup().addTo(map); // LayerGroup untuk menyimpan marker
 
-  // Menghitung batas peta yang memuat semua lokasi pengguna
-  var bounds = users.map(user => user.location);
-  map.fitBounds(bounds, { padding: [50, 50] });
+  // Fungsi untuk memperbarui marker pada peta
+  function updateMarkers() {  
+    $.get('/getMap', function(data) {
+      // Hapus semua marker yang ada dari LayerGroup
+      markerGroup.clearLayers();
+
+      // Fungsi untuk menghasilkan nilai acak dalam range tertentu
+      function getRandomValue(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      // Membuat variabel dummy dengan range normal
+      let speed = getRandomValue(20, 60); // Kecepatan 40-60 km/h
+      let engineTemp = getRandomValue(60, 80); // Suhu mesin 80-100°C
+      let rpm = getRandomValue(800, 2000); // RPM 800-1200
+
+      // Tambahkan marker untuk setiap pengguna ke LayerGroup
+      data.forEach(user => {
+        L.marker(user.location, { icon: customIcon }).addTo(markerGroup).bindPopup(`
+          SN: ${user.id_dmr}<br>
+          Name: ${user.name}<br>
+          Location: ${user.location}<br>
+          Speed: ${speed} km/h<br>
+          Engine Temp: ${engineTemp}°C<br>
+          RPM: ${rpm} 
+        `);
+      });
+
+      // Menghitung batas peta yang memuat semua lokasi pengguna
+      var bounds = data.map(user => user.location);
+
+      // Jika ini load pertama, lakukan fitBounds
+      if (isFirstLoad) {
+        map.fitBounds(bounds, { padding: [50, 50] });
+        isFirstLoad = false; // Set isFirstLoad menjadi false setelah fitBounds dipanggil
+      }
+    });
+  }
+
+  // Memanggil fungsi updateMarkers() secara berkala setiap 30 detik
+  setInterval(updateMarkers, 3000);
+
+  // Memanggil updateMarkers() untuk pertama kali saat halaman dimuat
+  updateMarkers();
 });

@@ -19,6 +19,30 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <h4 class="card-title">Map Tracking</h4>
+                                        <div class="col-6">
+                                        <form id="gpsForm">
+                                        @csrf
+                                        <select name="device" class="form-control">
+                                            <option value="1">Device 1</option>
+                                            <option value="2">Device 2</option>
+                                            <option value="3">Device 3</option>
+                                        </select>
+                                        </div>
+                                        <button id="getGPSButton" class="btn btn-primary toast-stacked-toggler">Get GPS</button>
+                                        </form>
+
+                                        <!-- Toast -->
+                                        <div class="toast-container position-fixed top-0 end-0 p-2" style="z-index: 15">
+                                        <div class="toast toast-stacked hide" role="alert" aria-live="assertive" aria-atomic="true" id="myToast">
+                                            <div class="toast-header">
+                                                <img src="https://i.ibb.co.com/GpV59nD/Logo-Prismax-Black-300x87.png" class="me-1" alt="Toast Image" height="40" width="45" />
+                                                <strong class="me-auto"></strong>
+                                                {{-- <small class="text-muted">2 seconds ago</small> --}}
+                                                <button type="button" class="ms-1 btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body">GPS data successfully obtained</div>
+                                        </div>
+                                        </div>
                                     </div>
                                     <div class="card-body">
                                         <div class="leaflet-map" id="basic-map2"></div>
@@ -28,7 +52,34 @@
                             <!-- /Basic Ends -->
 
                             <script>
-                                
+                                $(document).ready(function() {
+                                    $('#getGPSButton').click(function(e) {
+                                        e.preventDefault();
+                            
+                                        // Ubah tombol menjadi spinner loading
+                                        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ms-25 align-middle">Loading...</span>').prop('disabled', true);
+                            
+                                        $.ajax({
+                                            url: '/getGPS',
+                                            type: 'POST',
+                                            data: $('#gpsForm').serialize(),
+                                            success: function(response) {
+                                                // Ubah tombol kembali ke biasa
+                                                $('#getGPSButton').html('Get GPS').prop('disabled', false);
+                            
+                                                // Tampilkan toast
+                                                $('#myToast').toast('show');
+                            
+                                                // Lakukan sesuatu dengan respons dari server
+                                                // console.log(response);
+                                            },
+                                            error: function() {
+                                                // Ubah tombol kembali ke biasa jika terjadi error
+                                                $('#getGPSButton').html('Get GPS').prop('disabled', false);
+                                            }
+                                        });
+                                    });
+                                });
                             </script>
                         </div>
                     </section>
@@ -115,6 +166,7 @@
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
+    {{-- <script src="{{asset('prismax/vuexy/app-assets/js/scripts/components/components-bs-toast.js')}}"></script> --}}
     <script src="{{asset('prismax/vuexy/app-assets/data/company/app-company-list.js')}}"></script>
     {{-- <script src="{{asset('prismax/vuexy/assets/js/extended-ui-sweetalert2.js')}}"></script> --}}
 
