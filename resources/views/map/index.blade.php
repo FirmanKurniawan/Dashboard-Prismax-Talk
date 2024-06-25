@@ -20,13 +20,27 @@
                                     <div class="card-header">
                                         <h4 class="card-title">Map Tracking</h4>
                                         <div class="col-6">
-                                        <form id="gpsForm">
-                                        @csrf
-                                        <select name="device" class="form-control">
-                                            <option value="1">Device 1</option>
-                                            <option value="2">Device 2</option>
-                                            <option value="3">Device 3</option>
-                                        </select>
+                                            <form id="gpsForm">
+                                            @csrf
+                                            <select name="device" class="form-control">
+                                                <option value="1">Device 1</option>
+                                                <option value="2">Device 2</option>
+                                                <option value="3">Device 3</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <!-- Radio Button for Auto Get -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="autoGet" id="autoGetYes" value="yes">
+                                            <label class="form-check-label" for="autoGetYes">
+                                                Auto Get
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="autoGet" id="autoGetNo" value="no" checked>
+                                            <label class="form-check-label" for="autoGetNo">
+                                                Manual
+                                            </label>
                                         </div>
                                         <button id="getGPSButton" class="btn btn-primary toast-stacked-toggler">Get GPS</button>
                                         </form>
@@ -52,34 +66,138 @@
                             <!-- /Basic Ends -->
 
                             <script>
+                                // $(document).ready(function() {
+                                //     $('#getGPSButton').click(function(e) {
+                                //         e.preventDefault();
+                            
+                                //         // Ubah tombol menjadi spinner loading
+                                //         $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ms-25 align-middle">Loading...</span>').prop('disabled', true);
+                            
+                                //         $.ajax({
+                                //             url: '/getGPS',
+                                //             type: 'POST',
+                                //             data: $('#gpsForm').serialize(),
+                                //             success: function(response) {
+                                //                 // Ubah tombol kembali ke biasa
+                                //                 $('#getGPSButton').html('Get GPS').prop('disabled', false);
+                            
+                                //                 // Tampilkan toast
+                                //                 $('#myToast').toast('show');
+                            
+                                //                 // Lakukan sesuatu dengan respons dari server
+                                //                 // console.log(response);
+                                //             },
+                                //             error: function() {
+                                //                 // Ubah tombol kembali ke biasa jika terjadi error
+                                //                 $('#getGPSButton').html('Get GPS').prop('disabled', false);
+                                //             }
+                                //         });
+                                //     });
+                                // });
+
+                                // $(document).ready(function() {
+                                //     $('#getGPSButton').click(function(e) {
+                                //         e.preventDefault();
+
+                                //         // Ubah tombol menjadi spinner loading
+                                //         $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ms-25 align-middle">Loading...</span>').prop('disabled', true);
+
+                                //         $.ajax({
+                                //             url: '/getGPS',
+                                //             type: 'POST',
+                                //             data: $('#gpsForm').serialize(),
+                                //             success: function(response) {
+                                //                 // Ubah tombol kembali ke biasa
+                                //                 $('#getGPSButton').html('Get GPS').prop('disabled', false);
+
+                                //                 // Tampilkan toast
+                                //                 $('#myToast').toast('show');
+
+                                //                 // Lakukan sesuatu dengan respons dari server
+                                //                 // console.log(response);
+                                //             },
+                                //             error: function() {
+                                //                 // Ubah tombol kembali ke biasa jika terjadi error
+                                //                 $('#getGPSButton').html('Get GPS').prop('disabled', false);
+                                //             }
+                                //         });
+                                //     });
+
+                                //     // Listener untuk radio button "Auto Get" dan "Manual"
+                                //     $('input[type="radio"][name="autoGet"]').change(function() {
+                                //         if (this.value == 'yes') {
+                                //             // Sembunyikan button "Get GPS" jika "Auto Get" dipilih
+                                //             $('#getGPSButton').hide();
+                                //         }
+                                //         else if (this.value == 'no') {
+                                //             // Tampilkan button "Get GPS" jika "Manual" dipilih
+                                //             $('#getGPSButton').show();
+                                //         }
+                                //     });
+                                // });
+
                                 $(document).ready(function() {
-                                    $('#getGPSButton').click(function(e) {
-                                        e.preventDefault();
-                            
-                                        // Ubah tombol menjadi spinner loading
-                                        $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ms-25 align-middle">Loading...</span>').prop('disabled', true);
-                            
-                                        $.ajax({
-                                            url: '/getGPS',
-                                            type: 'POST',
-                                            data: $('#gpsForm').serialize(),
-                                            success: function(response) {
-                                                // Ubah tombol kembali ke biasa
-                                                $('#getGPSButton').html('Get GPS').prop('disabled', false);
-                            
-                                                // Tampilkan toast
-                                                $('#myToast').toast('show');
-                            
-                                                // Lakukan sesuatu dengan respons dari server
-                                                // console.log(response);
-                                            },
-                                            error: function() {
-                                                // Ubah tombol kembali ke biasa jika terjadi error
-                                                $('#getGPSButton').html('Get GPS').prop('disabled', false);
-                                            }
-                                        });
-                                    });
-                                });
+    var autoGetInterval;
+
+    function getGPS() {
+        // Ubah tombol menjadi spinner loading
+        $('#getGPSButton').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ms-25 align-middle">Loading...</span>').prop('disabled', true);
+
+        $.ajax({
+            url: '/getGPS',
+            type: 'POST',
+            data: $('#gpsForm').serialize(),
+            success: function(response) {
+                // Ubah tombol kembali ke biasa
+                $('#getGPSButton').html('Get GPS').prop('disabled', false);
+
+                // Tampilkan toast
+                $('#myToast').toast('show');
+            },
+            error: function() {
+                // Ubah tombol kembali ke biasa jika terjadi error
+                $('#getGPSButton').html('Get GPS').prop('disabled', false);
+            }
+        });
+    }
+
+    function getGPSAuto() {
+        $.ajax({
+            url: '/getGPSAuto',
+            type: 'POST',
+            data: $('#gpsForm').serialize(),
+            success: function(response) {
+                // Tampilkan toast atau lakukan sesuatu dengan respons
+                $('#myToast').toast('show');
+            },
+            error: function() {
+                // Handle error
+            }
+        });
+    }
+
+    $('#getGPSButton').click(function(e) {
+        e.preventDefault();
+        getGPS();
+    });
+
+    $('input[type="radio"][name="autoGet"]').change(function() {
+        if (this.value == 'yes') {
+            // Sembunyikan button "Get GPS"
+            $('#getGPSButton').hide();
+
+            // Mulai hit API secara otomatis setiap 5 detik
+            autoGetInterval = setInterval(getGPSAuto, 5000);
+        }
+        else if (this.value == 'no') {
+            // Tampilkan button "Get GPS"
+            $('#getGPSButton').show();
+
+            // Hentikan hit API secara otomatis
+            if (autoGetInterval) clearInterval(autoGetInterval);
+        }
+    });
+});
                             </script>
                         </div>
                     </section>
