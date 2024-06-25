@@ -18,7 +18,7 @@ class DeviceController extends Controller
         // Validasi input
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'serial_number' => 'required|string|unique:serial_number',
+            'serial_number' => 'required|string|max:255',
         ]);
 
         // Buat device baru
