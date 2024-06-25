@@ -464,7 +464,7 @@ $(function () {
                     }
                 },
                 {
-                    text: 'Add Callsign',
+                    text: 'Add Device',
                     className: 'add-new btn btn-primary',
                     attr: {
                         'data-bs-toggle': 'modal',

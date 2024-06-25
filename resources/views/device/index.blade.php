@@ -83,16 +83,21 @@
                                 </div>
                                 <div class="modal-body flex-grow-1">
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-icon-default-name_callsign">Name</label>
-                                        <input type="text" id="basic-icon-default-name_callsign" class="form-control dt-uname" placeholder="John Doe" name="user-name_callsign" required />
+                                        <label class="form-label" for="basic-icon-default-name_device">Name</label>
+                                        <input type="text" id="basic-icon-default-name_device" class="form-control dt-uname" placeholder="Prismax Miu 1" name="user-name_callsign" required />
                                     </div>
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-icon-default-callsign">Serial Number</label>
-                                        <input type="text" id="basic-icon-default-callsign" class="form-control dt-uname" placeholder="M3HPZ" name="user-callsign" required />
+                                        <label class="form-label" for="basic-icon-default-device">Serial Number</label>
+                                        <input type="text" id="basic-icon-default-device" class="form-control dt-uname" placeholder="1fd7ce38" name="user-callsign" required />
                                     </div>
                                     <div class="mb-1">
-                                        <label class="form-label" for="basic-icon-default-email_callsign">Priority</label>
-                                        <input type="email" id="basic-icon-default-email_callsign" class="form-control dt-email" placeholder="john.doe@mag.net.id" name="user-email_callsign" required />
+                                        <label class="form-label" for="basic-icon-default-email_device">Priority</label>
+                                        <select name="user-email_callsign" id="" class="form-control dt-email" required>
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
                                     </div>
                                     <button type="submit" class="btn btn-primary me-1 data-submit">Submit</button>
                                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -111,9 +116,9 @@
                                 e.preventDefault(); // Mencegah form submit default
                     
                                 // Ambil data dari form
-                                var name = $('#basic-icon-default-name_callsign').val();
-                                var callsign = $('#basic-icon-default-callsign').val();
-                                var email = $('#basic-icon-default-email_callsign').val();
+                                var name = $('#basic-icon-default-name_device').val();
+                                var serial_number = $('#basic-icon-default-device').val();
+                                var priority = $('#basic-icon-default-email_device').val();
                                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                     
                                 // Tampilkan konfirmasi SweetAlert2
@@ -136,8 +141,8 @@
                                             data: {
                                                 // _token: csrfToken,
                                                 name: name,
-                                                callsign: callsign,
-                                                email: email
+                                                serial_number: serial_number,
+                                                priority: priority
                                             },
                                             success: function(response) {
                                                 // Membersihkan formulir setelah berhasil menambahkan data
@@ -146,7 +151,7 @@
                                                 // Tampilkan pesan sukses menggunakan SweetAlert2
                                                 Swal.fire({
                                                     title: 'Success!',
-                                                    text: 'Callsign has been added successfully.',
+                                                    text: 'Device has been added successfully.',
                                                     icon: 'success',
                                                     confirmButtonText: 'OK'
                                                 }).then((result) => {
@@ -165,7 +170,7 @@
                                                 // ...
                                                 Swal.fire({
                                                     title: 'Error!',
-                                                    text: 'Failed to add callsign. Please try again later.',
+                                                    text: 'Failed to add device. Please try again later.',
                                                     icon: 'error',
                                                     confirmButtonText: 'OK'
                                                 });
