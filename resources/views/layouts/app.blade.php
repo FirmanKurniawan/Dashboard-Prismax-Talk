@@ -273,7 +273,8 @@
                     {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('pistar.index') }}"><i data-feather="radio"></i><span class="menu-title text-truncate" data-i18n="File Manager">PiStar</span></a> --}}
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('callsign.index') }}"><i data-feather="user"></i><span class="menu-title text-truncate" data-i18n="File Manager">Callsign</span></a>
                     <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('lastheard.index') }}"><i data-feather="target"></i><span class="menu-title text-truncate" data-i18n="File Manager">All Lastheard</span></a>
-                        <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('map.index') }}"><i data-feather="map-pin"></i><span class="menu-title text-truncate" data-i18n="File Manager">Map Tracking</span></a>
+                    <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('map.index') }}"><i data-feather="map-pin"></i><span class="menu-title text-truncate" data-i18n="File Manager">Map Tracking</span></a>
+                    <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('device.index') }}"><i data-feather="airplay"></i><span class="menu-title text-truncate" data-i18n="File Manager">Device</span></a>
                     {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('order.index') }}"><i data-feather="dollar-sign"></i><span class="menu-title text-truncate" data-i18n="File Manager">Order</span></a> --}}
                 </li>
             </ul>

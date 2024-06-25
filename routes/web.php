@@ -12,6 +12,7 @@ use App\Http\Controllers\LastheardController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\PistarController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\TriggerController;
 
 Route::get('/', function () {
@@ -57,3 +58,7 @@ Route::get('/getMap', [MapController::class, 'getMap']);
 Route::get('/requestGPS/{data}', [MapController::class, 'requestGPS']);
 Route::get('/checkStatus', [TriggerController::class, 'checkStatus']);
 Route::get('/callbackStatus', [TriggerController::class, 'callbackStatus']);
+
+Route::get('/device', [DeviceController::class, 'index'])->name('device.index');
+Route::post('/device/store', [DeviceController::class, 'store']);
+Route::get('/device/list', [DeviceController::class, 'list']);
