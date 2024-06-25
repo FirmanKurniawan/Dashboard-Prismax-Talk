@@ -92,7 +92,7 @@
                                     </div>
                                     <div class="mb-1">
                                         <label class="form-label" for="basic-icon-default-email_device">Priority</label>
-                                        <select name="basic-icon-default-email_device" id="" class="form-control dt-email" required>
+                                        <select name="basic-icon-default-email_device" id="basic-icon-default-email_device" class="form-control dt-email" required>
                                             <option value="0">0</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
