@@ -4702,9 +4702,9 @@ $(function () {
       }
 
       // Membuat variabel dummy dengan range normal
-      let speed = getRandomValue(20, 60); // Kecepatan 40-60 km/h
+      let speed = getRandomValue(5, 20); // Kecepatan 40-60 km/h
       let engineTemp = getRandomValue(60, 80); // Suhu mesin 80-100°C
-      let rpm = getRandomValue(800, 2000); // RPM 800-1200
+      let rpm = getRandomValue(800, 1800); // RPM 800-1200
 
       // Tambahkan marker untuk setiap pengguna ke LayerGroup
       data.forEach(user => {

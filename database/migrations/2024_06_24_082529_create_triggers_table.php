@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('triggers', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default('waiting');
+            $table->string('device');
+            $table->enum('status', ['waiting', 'done'])->default('waiting');
+            $table->string('priority');
             $table->timestamps();
         });
     }

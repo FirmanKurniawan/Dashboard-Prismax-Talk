@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Map;
 use App\Models\Trigger;
+use App\Models\Device;
 
 class MapController extends Controller
 {
@@ -39,6 +40,21 @@ class MapController extends Controller
         }
         
         return redirect()->route('map.index');
+    }
+
+    public function getGPSAuto()
+    {
+        // Ambil data device berdasarkan prioritas
+        $devices = Device::orderByRaw("FIELD(priority, '1', '2', '3', '0')")->get();
+        foreach ($devices as $device) {
+            // Insert data ke model Trigger berdasarkan urutan Device
+            Trigger::create([
+                'device' => "GPS;".$device->name, // Asumsi ada kolom 'name' di tabel triggers yang sesuai dengan 'name' dari Device
+                'priority' => $device->priority, // Asumsi ada kolom 'priority' di tabel triggers yang sesuai dengan 'priority' dari Device
+            ]);
+        }
+        
+        return "success";
     }
 
     public function getMap()

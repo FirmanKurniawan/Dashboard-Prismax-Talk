@@ -137,67 +137,67 @@
                                 // });
 
                                 $(document).ready(function() {
-    var autoGetInterval;
+                                    var autoGetInterval;
 
-    function getGPS() {
-        // Ubah tombol menjadi spinner loading
-        $('#getGPSButton').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ms-25 align-middle">Loading...</span>').prop('disabled', true);
+                                    function getGPS() {
+                                        // Ubah tombol menjadi spinner loading
+                                        $('#getGPSButton').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="ms-25 align-middle">Loading...</span>').prop('disabled', true);
 
-        $.ajax({
-            url: '/getGPS',
-            type: 'POST',
-            data: $('#gpsForm').serialize(),
-            success: function(response) {
-                // Ubah tombol kembali ke biasa
-                $('#getGPSButton').html('Get GPS').prop('disabled', false);
+                                        $.ajax({
+                                            url: '/getGPS',
+                                            type: 'POST',
+                                            data: $('#gpsForm').serialize(),
+                                            success: function(response) {
+                                                // Ubah tombol kembali ke biasa
+                                                $('#getGPSButton').html('Get GPS').prop('disabled', false);
 
-                // Tampilkan toast
-                $('#myToast').toast('show');
-            },
-            error: function() {
-                // Ubah tombol kembali ke biasa jika terjadi error
-                $('#getGPSButton').html('Get GPS').prop('disabled', false);
-            }
-        });
-    }
+                                                // Tampilkan toast
+                                                $('#myToast').toast('show');
+                                            },
+                                            error: function() {
+                                                // Ubah tombol kembali ke biasa jika terjadi error
+                                                $('#getGPSButton').html('Get GPS').prop('disabled', false);
+                                            }
+                                        });
+                                    }
 
-    function getGPSAuto() {
-        $.ajax({
-            url: '/getGPS',
-            type: 'POST',
-            data: $('#gpsForm').serialize(),
-            success: function(response) {
-                // Tampilkan toast atau lakukan sesuatu dengan respons
-                $('#myToast').toast('show');
-            },
-            error: function() {
-                // Handle error
-            }
-        });
-    }
+                                    function getGPSAuto() {
+                                        $.ajax({
+                                            url: '/getGPSAuto',
+                                            type: 'POST',
+                                            data: $('#gpsForm').serialize(),
+                                            success: function(response) {
+                                                // Tampilkan toast atau lakukan sesuatu dengan respons
+                                                $('#myToast').toast('show');
+                                            },
+                                            error: function() {
+                                                // Handle error
+                                            }
+                                        });
+                                    }
 
-    $('#getGPSButton').click(function(e) {
-        e.preventDefault();
-        getGPS();
-    });
+                                    $('#getGPSButton').click(function(e) {
+                                        e.preventDefault();
+                                        getGPS();
+                                    });
 
-    $('input[type="radio"][name="autoGet"]').change(function() {
-        if (this.value == 'yes') {
-            // Sembunyikan button "Get GPS"
-            $('#getGPSButton').hide();
+                                    $('input[type="radio"][name="autoGet"]').change(function() {
+                                        if (this.value == 'yes') {
+                                            // Sembunyikan button "Get GPS"
+                                            $('#getGPSButton').hide();
 
-            // Mulai hit API secara otomatis setiap 5 detik
-            autoGetInterval = setInterval(getGPSAuto, 5000);
-        }
-        else if (this.value == 'no') {
-            // Tampilkan button "Get GPS"
-            $('#getGPSButton').show();
+                                            // Mulai hit API secara otomatis setiap 5 detik
+                                            autoGetInterval = setInterval(getGPSAuto, 10000);
+                                        }
+                                        else if (this.value == 'no') {
+                                            // Tampilkan button "Get GPS"
+                                            $('#getGPSButton').show();
 
-            // Hentikan hit API secara otomatis
-            if (autoGetInterval) clearInterval(autoGetInterval);
-        }
-    });
-});
+                                            // Hentikan hit API secara otomatis
+                                            if (autoGetInterval) clearInterval(autoGetInterval);
+                                        }
+                                    });
+                                });
                             </script>
                         </div>
                     </section>

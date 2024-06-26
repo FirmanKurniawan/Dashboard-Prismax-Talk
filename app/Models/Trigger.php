@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Trigger extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'device', 'status', 'priority',
+    ];
 }

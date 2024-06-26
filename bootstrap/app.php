@@ -12,7 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
-            'requestGPS'
+            'requestGPS',
+            'getGPSAuto'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

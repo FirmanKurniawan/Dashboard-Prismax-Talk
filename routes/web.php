@@ -52,6 +52,7 @@ Route::get('/master/lastheard', [MasterController::class, 'lastheard']);
 
 Route::get('/map', [MapController::class, 'index'])->name('map.index');
 Route::post('/getGPS', [MapController::class, 'getGPS']);
+Route::post('/getGPSAuto', [MapController::class, 'getGPSAuto']);
 Route::get('/getMap', [MapController::class, 'getMap']);
 
 // Route::post('/requestGPS', [MapController::class, 'requestGPS']);
