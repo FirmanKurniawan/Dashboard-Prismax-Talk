@@ -163,7 +163,7 @@
 
                                     function getGPSAuto() {
                                         $.ajax({
-                                            url: '/getGPSAuto',
+                                            url: '/getGPS',
                                             type: 'POST',
                                             data: $('#gpsForm').serialize(),
                                             success: function(response) {
