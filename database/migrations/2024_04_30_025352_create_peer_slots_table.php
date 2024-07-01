@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('ts')->nullable();
             $table->string('type')->nullable();
             $table->string('sub')->nullable();
-            $table->integer('src')->nullable();
+            $table->string('src')->nullable();
             $table->string('dest')->nullable();
-            $table->double('timeout')->nullable();
+            $table->string('timeout')->nullable();
             $table->timestamps();
         });
     }
