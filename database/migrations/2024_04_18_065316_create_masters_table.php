@@ -31,7 +31,7 @@ return new class extends Migration
             // $table->timestamps();
             $table->id();
             $table->string('name');
-            $table->string('repeat_statusn');
+            $table->string('repeat_status');
             $table->timestamps();
         });
     }

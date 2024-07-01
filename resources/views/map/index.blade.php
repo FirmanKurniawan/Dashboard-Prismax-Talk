@@ -163,7 +163,7 @@
 
                                     function getGPSAuto() {
                                         $.ajax({
-                                            url: '/getGPS',
+                                            url: '/getGPSAuto',
                                             type: 'POST',
                                             data: $('#gpsForm').serialize(),
                                             success: function(response) {
@@ -187,7 +187,7 @@
                                             $('#getGPSButton').hide();
 
                                             // Mulai hit API secara otomatis setiap 5 detik
-                                            autoGetInterval = setInterval(getGPSAuto, 5000);
+                                            autoGetInterval = setInterval(getGPSAuto, 10000);
                                         }
                                         else if (this.value == 'no') {
                                             // Tampilkan button "Get GPS"
